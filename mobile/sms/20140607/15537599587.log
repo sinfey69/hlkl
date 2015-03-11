@@ -1,0 +1,41 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>2</code>
+<msg>提交成功</msg>
+<smsid>16469377</smsid>
+</SubmitResult>
+
+2014-06-07 02:17:42
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>4081</code>
+<msg>同一手机号码一分钟之内发送频率不能超过1条</msg>
+<smsid>0</smsid>
+</SubmitResult>
+
+2014-06-07 02:17:46
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>4081</code>
+<msg>同一手机号码一分钟之内发送频率不能超过1条</msg>
+<smsid>0</smsid>
+</SubmitResult>
+
+2014-06-07 02:18:14
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>4081</code>
+<msg>同一手机号码一分钟之内发送频率不能超过1条</msg>
+<smsid>0</smsid>
+</SubmitResult>
+
+2014-06-07 02:18:25
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>2</code>
+<msg>提交成功</msg>
+<smsid>16469513</smsid>
+</SubmitResult>
+
+2014-06-07 02:19:33

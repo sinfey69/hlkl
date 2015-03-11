@@ -1,0 +1,44 @@
+{$header}
+<body>
+	<div class="main">
+         
+        <div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img border="0" src="./templates/images/nav4-c.jpg"/></a></div>
+        </div>
+        
+        <div class="person"><img border="0" src="./templates/images/img.jpg" width="640" height="376"/></div>
+        
+        <div class="list">
+        	<div class="item"><a href="user.php?act=edit">个人资料<span>> ></span></a></div>
+        </div>
+        <div class="list">
+        	<div class="item"><a href="flow.php">我的购物车<span>> ></span></a></div>
+        </div>
+        <div class="list">
+        	<div class="item"><a href="javascript:showjf();">我的积分<span>> ></span></a></div>
+        </div>
+        
+	    <div class="list" id="jf" style="background:#FFFFFF;display:none;">
+	        <div class="item">您当前可用积分：<font color="red">{if $score}{$score}{else}0{/if}分</font></div>
+	    </div>
+        
+        <div class="list">
+        	<div class="item"><a href="buy.php?act=order">我的订单<span>> ></span></a></div>
+        </div>
+        <div class="list">
+        	<div class="item"><a href="user.php?act=addresslist">地址管理<span>> ></span></a></div>
+        </div>
+        <div class="list">
+        	<div class="item"><a href="user.php?act=edit_pwdlist">密码管理<span>> ></span></a></div>
+        </div>                
+    </div>
+</body>
+<script>
+	function showjf(){
+		$("#jf").slideToggle();
+	}
+</script>
+</html>

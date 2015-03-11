@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,user.js,transport.js'}
+<body>
+<!--{if !(($action eq 'login') || ($action eq 'register') || ($action eq 'get_password') )}-->
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="block1 box" style="width:1097px;">
+ <div id="ur_here">
+  <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+  </div>
+</div>
+<!--当前位置 end-->
+<div class="blank"></div>
+<!--{else}-->
+{if $stats_code}
+	<div align="left" style="display:none">{$stats_code}</div>
+{/if}
+</script>
+<!--{/if}-->
+<!--# 登录/注册界面 start-->
+<!--{if ($action eq 'login') || ($action eq 'register') || ($action eq 'get_password')}-->
+<div id="bg" style="position:absolute; top:0px; left:0px; z-index:-999;"><img src="images/bg.jpg" alt="HIGH" /></div> 
+<!--{/if}-->
+<!--{if $action eq 'login'}-->
+<div style="position:absolute;width:414px;right:50%;height:500px;top:30%;margin-top:-180px;margin-right:-20px;background:url(images/login_bg.gif) no-repeat;z-index:2;">
+<!--{elseif $action eq 'register'}-->
+<div style="position:absolute;width:414px;right:50%;height:500px;top:30%;margin-top:-180px;margin-right:-20px;background:url(images/reg_bg.gif) no-repeat;z-index:2;">
+<!--{elseif $action eq 'get_password'}-->
+<div style="position:absolute;width:414px;right:50%;height:500px;top:30%;margin-top:-180px;margin-right:-20px;background:url(images/get_password.gif) no-repeat;z-index:2;">
+<!--{/if}-->
+
+ <!--登录界面 start-->
+ <!-- {if $action eq 'login'} -->
+ <div style="display:block;width:200px;height:180px; position:relative;left:27px;top:152px;z-index:3;">
+  <form action="user.php" method="post" name="loginForm" id="loginForm" onSubmit="return userLogin()">
+   <div style="display:block;width:100%;height:24px;padding:5px 0;">
+      <input type="text" name="username" class="inputBg" size="8" style="border:none;background:none;position:relative;left:16px;top:-3px;width:180px;height:27px;line-height:27px;vertical-align:middle;" />
+   </div>
+   <div class="blank"></div>
+   <div style="display:block;width:100%;height:24px;padding:5px 0;">
+      <input type="password" name="password" class="inputBg" size="8" style="border:none;background:none;position:relative;left:17px;top:-1px;_top:-24px;width:180px;height:27px;line-height:27px;vertical-align:middle;" />  
+   </div>
+   <div class="blank"></div>
+   <div style="display:block;width:100%;height:24px;padding-left:15px;">
+      <a href="user.php?act=get_password"><span class="fl" style="display:block;width:50px;height:24px;margin-right:15px;border:none;"></span></a>
+      <a href="#"><span class="fl" style="display:block;width:55px;height:24px;border:none;"></span></a>
+   </div>
+   <div class="blank"></div>
+   <div style="display:block;width:100%;height:36px;margin-top:30px;">
+     <span class="fl" style="display:block;width:75px;height:30px;margin-right:16px;"><input type="submit" value="" style="display:block;width:100%;height:30px;border:none;background:none;cursor:pointer;" /></span>
+     <span class="fl" style="display:block;width:85px;height:30px;"><input type="button" value="" onclick="window.location.href = 'user.php?act=register';" style="display:block;width:100%;height:30px;border:none;background:none;cursor:pointer;" /><input type="hidden" name="act" value="act_login" /></span>
+   </div>
+  </form>
+ </div>
+ <!--{/if}-->
+ <!--登录界面 end-->
+
+<!--*会员注册界面 start-->
+<!--{if $action eq 'register'}-->
+    <!-- {if $shop_reg_closed eq 1} -->
+        <div class="f1 f5" align="center" style="margin-top:24px;font-size:18px;">{$lang.shop_register_closed}</div>
+<!-- {else} -->
+    {insert_scripts files='utils.js'}
+  <div class="usBox_2 clearfix" style="width:480px;position:relative;left:96px;top:112px;">  
+    <form action="user.php" method="post" name="formUser" onsubmit="return register();">
+		<style>
+		input{width: 180px; border: 0px; background: none;height: 24px; line-height: 24px;}
+		table td{padding: 0px; height: 33px;}
+		</style>
+      <table width="100%"  border="0" align="left" cellpadding="5" cellspacing="3">
+        <tr><!--用户名-->
+          <td width="10%" align="right"><!--{if 0}-->{$lang.label_username}<!--{/if}--></td>
+          <td width="90%">
+          <input name="username" type="text" id="username" onblur="is_registered(this.value);" class="inputBg" />
+            <span id="username_notice" style="color:#FF0000"></span>
+          </td>
+        </tr>
+	<!--{if 0}-->
+        <tr><!--电子邮箱-->
+          <td align="right">{$lang.label_email}</td>
+          <td>
+          <input name="email" type="text" size="23" id="email" onblur="checkEmail(this.value);"  class="inputBg"/>
+            <span id="email_notice" style="color:#FF0000"> *</span>
+          </td>
+        </tr>
+        <!--{/if}-->
+        <tr>
+          <td align="right"><!--{if 0}-->{$lang.label_password}<!--{/if}--></td>
+          <td>
+          <input name="password" type="password" id="password1" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" class="inputBg" style="margin-top:2px;" />
+            <span style="color:#FF0000" id="password_notice"></span>
+          </td>
+        </tr>
+	<!--{if 0}-->
+        <tr>
+          <td align="right">{$lang.label_password_intensity}</td>
+          <td>
+            <table width="145" border="0" cellspacing="0" cellpadding="1">
+              <tr align="center">
+                <td width="33%" id="pwd_lower">{$lang.pwd_lower}</td>
+                <td width="33%" id="pwd_middle">{$lang.pwd_middle}</td>
+                <td width="33%" id="pwd_high">{$lang.pwd_high}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!--{/if}-->
+        <tr>
+          <td align="right"><!--{if 0}-->{$lang.label_confirm_password}<!--{/if}--></td>
+          <td>
+          <input name="confirm_password" type="password" id="conform_password" onblur="check_conform_password(this.value);"  class="inputBg" style="margin-top:3px;"/>
+            <span style="color:#FF0000" id="conform_password_notice"></span>
+          </td>
+        </tr>
+        <!-- {foreach from=$extend_info_list item=field} -->
+	<!-- {if $field.id eq 6} -->
+        <tr style=" display: none">
+          <td align="right">{$lang.passwd_question}</td>
+          <td>
+          <select name='sel_question'>
+	  <option value='0'>{$lang.sel_question}</option>
+	  {html_options options=$passwd_questions}
+	  </select>
+          </td>
+        </tr>
+        <tr style="display:none;">
+          <td align="right" <!-- {if $field.is_need} -->id="passwd_quesetion"<!--{/if}-->>{$lang.passwd_answer}</td>
+          <td>
+	  <input name="passwd_answer" type="text" size="25" class="inputBg" maxlengt='20'/><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+          </td>
+        </tr>
+	<!-- {else} -->
+        <tr style="display:none;">
+          <td align="right" <!-- {if $field.is_need} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
+          <td>
+          <input name="extend_field{$field.id}" id="extend_field{$field.id}" type="text" size="25" class="inputBg" /><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+          </td>
+        </tr>
+	<!-- {/if} -->
+	<!-- {/foreach} -->
+        <tr>
+          <td>&nbsp;</td>
+          <td style="padding-top: 5px;">
+          <input name="mobile_code" id="mobile_code" type="text" class="inputBg" ><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+          </td>
+        </tr>
+	<tr>
+	  <td>&nbsp;</td>
+	  <td><input id="zphone" type="button" onclick="sendSms();" style="width:140px;height:24px;position:relative;left:32px; top:-2px;background:none;border:none;cursor:pointer;"></td>
+	</tr>
+        <script>var mobile_field='username';</script>
+        <script type="text/javascript" src="sms/sms.js"></script>
+      <!-- 判断是否启用验证码{if $enabled_captcha} -->
+      <tr style="display:none">
+      <td align="right">{$lang.comment_captcha}</td>
+      <td><input type="text" size="8" name="captcha" class="inputBg" />
+      <img src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /> </td>
+      </tr>
+      <!--{/if}-->
+        <tr style="display: none;">
+          <td>&nbsp;</td>
+          <td><label>
+            <input name="agreement" type="checkbox" value="1" checked="checked" />
+            {$lang.agreement}</label></td>
+        </tr>
+	<tr>
+	  <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	</tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td align="left">
+              <div class="btns">
+		  <input name="Submit" type="submit" value="" style="width:90px;height:48px;border:none;position:relative;left:-20px;top:6px;background:none;cursor:pointer;"/>
+		  <input name="exit" type="button" onclick="window.location.href='/'" style="width:90px;height:48px;border:none;position:relative;left:-20px;top:6px;background:none;cursor:pointer;"/>
+		  <input name="act" type="hidden" value="act_register" >
+		  <input type="hidden" name="back_act" value="{$back_act}" />
+	      </div>
+          </td>
+        </tr>
+        <tr style="display:none;">
+          <td colspan="2">&nbsp;</td>
+        </tr>
+	<!--{if 0}-->
+        <tr>
+          <td>&nbsp;</td>
+          <td class="actionSub">
+          <a href="user.php?act=login">{$lang.want_login}</a><br />
+          <a href="user.php?act=get_password">{$lang.forgot_password}</a>
+          </td>
+        </tr>
+        <!--{/if}-->
+      </table>
+    </form>
+  </div>
+   <!--{/if}-->
+<!--{/if}-->
+<!--#会员注册界面 end-->
+
+    <!--{if $action eq 'get_password'} -->
+    {insert_scripts files='utils.js,jquery-1.7.2.min.js'}
+    <script type="text/javascript">
+    {foreach from=$lang.password_js item=item key=key}
+      var {$key} = "{$item}";
+    {/foreach}
+
+    </script>
+	 <div style="display:block;width:200px;height:180px; position:relative;left:18px;top:168px;z-index:3;">
+  <form action="user.php" method="post" name="loginForm" id="loginForm" onSubmit="return userLogin()">
+   <div style="display:block;width:100%;height:24px;padding:5px 0;">
+	<input style="border:none;background:none;position:relative;left:25px;top:-18px;width:180px;height:25px;line-height:25px;vertical-align:middle;" name="username" id="username" type="text" size="30" class="inputBg" />  </div>
+   <div class="blank"></div>
+   <div style="display:block;width:100%;height:24px;padding:5px 0;">
+      <input type="text" name="sms_code" class="inputBg" maxlength="6" style="border:none;background:none;position:relative;left:25px;top:-17px;_top:-21px;width:104px;height:25px;line-height:25px;vertical-align:middle;" />
+	  <input type="button" id="sendcode" value="获取验证码" title="点击获取验证码" style="border:none;cursor: pointer;height: 25px;width: 74px;position:relative;left:25px;top:-15px;_top:-22px;">
+   </div>
+   <div class="blank"></div>
+   <div style="display:block;width:100%;height:24px;padding:6px 0;padding-left:30px;">
+      <a href="user.php?act=get_password"><span class="fl" style="display:block;width:50px;height:24px;margin-right:10px;border:none;"></span></a>
+      <a href="#"><span class="fl" style="display:block;width:50px;height:24px;border:none;"></span></a>
+   </div>
+   <div style="display:block;width:100%;height:36px;">
+     <span class="fl" style="display:block;width:90px;height:38px;margin-right:5px;">
+		<input type="submit" name="submit" value="" style="display:block;width:100%;height:38px;border:none;background:none;cursor:pointer;" />
+	</span>
+     <span class="fl" style="display:block;width:90px;height:38px;">
+		<input type="button" value="" onclick="window.location.href = 'user.php';" style="display:block;width:100%;height:38px;border:none;background:none;cursor:pointer;" />
+		<input type="hidden" name="act" value="get_password" />
+	</span>
+   </div>
+  </form>
+ </div>
+ <script type="text/javascript">
+    $("#sendcode").click(function(){ 
+		var username = $('#username').val();
+		Ajax.call('sms/sms.php?act=send_code', '&mobile=' + username, SendResult, 'POST', 'JSON');
+    });
+
+	function SendResult(result){
+		alert(result.msg);
+		if(result.code == 2){
+			DisableEnable($("#sendcode"));
+		}
+	}
+
+	var time=60;
+	function DisableEnable(objid){
+		if(time<=0){
+				objid.val('发送验证码');
+				objid.removeAttr("disabled");
+				time=60;
+				return true;
+		}else{
+				objid.attr("disabled","true");
+				objid.val("等待" + time + "秒");
+				setTimeout(function() {DisableEnable(objid)} ,1000);
+		}
+		time-=1; 
+	}
+
+    </script>
+
+<!--{/if}-->
+
+
+<!--{if ($action eq 'login') || ($action eq 'register') || ($action eq 'get_password')}-->
+</div>
+<div id="back" style="position:relative;text-align:center;">
+  <img src="images/background.jpg" />
+  <div style="display:block;background:url(images/logo.png) no-repeat; width:171px; height:37px; float:left;position:absolute;top:20px;left:20px;"></div>
+  <div style="display:block;background:url(images/ambassador.png) no-repeat; width:96px; height:13px; float:right; position:absolute; bottom:20px; right:20px;"></div>
+</div>
+<script type="text/javascript"> 
+var imgWidth = 1716;
+var imgHeight = 1060;
+function autosize(){ 
+    // 获取窗口宽度 
+    if (window.innerWidth) 
+        winWidth = window.innerWidth; 
+    else if ((document.body) && (document.body.clientWidth)) 
+        winWidth = document.body.clientWidth; 
+    // 获取窗口高度 
+    if (window.innerHeight) 
+       winHeight = window.innerHeight; 
+    else if ((document.body) && (document.body.clientHeight)) 
+       winHeight = document.body.clientHeight; 
+    // 通过深入 Document 内部对 body 进行检测，获取窗口大小 
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) 
+    { 
+       winHeight = document.documentElement.clientHeight; 
+       winWidth = document.documentElement.clientWidth; 
+    } 
+
+	var bgImg = document.getElementById('bg').getElementsByTagName('img')[0];
+	    bgImg.width = winWidth;
+	    bgImg.height= winHeight; 
+	var backImg = document.getElementById('back').getElementsByTagName('img')[0];
+	    backImg.height = winHeight;
+		backImg.width = parseInt(winHeight * imgWidth / imgHeight);
+}   
+window.onLoad = autosize();
+window.onResize = autosize();
+</script>
+<!--{/if}-->
+<!--# 登录/注册界面 end-->
+
+
+<!--*找回密码界面 -->
+
+<!--*通过问题找回密码的确认找回账号界面 -->
+    <!--{if $action eq 'qpassword_name'} -->
+     <div class="block1">
+<div class="usBox">
+  <div class="usBox_2 clearfix">
+    <form action="user.php" method="post">
+        <br />
+        <table width="70%" border="0" align="center">
+          <tr>
+            <td colspan="2" align="center"><strong>{$lang.get_question_username}</strong></td>
+          </tr>
+          <tr>
+            <td width="29%" align="right">{$lang.username}</td>
+            <td width="61%"><input name="user_name" type="text" size="30" class="inputBg" /></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="hidden" name="act" value="get_passwd_question" />
+              <input type="submit" name="submit" value="{$lang.submit}" class="bnt_blue" style="border:none;" />
+              <input name="button" type="button" onclick="history.back()" value="{$lang.back_page_up}" style="border:none;" class="bnt_blue_1" />
+	    </td>
+          </tr>
+        </table>
+        <br />
+      </form>
+  </div>
+</div>
+</div>
+<!--{/if}-->
+
+<!--*根据输入账号显示密码问题界面 -->
+
+    <!--{if $action eq 'get_passwd_question'} -->
+     <div class="block">
+<div class="usBox">
+  <div class="usBox_2 clearfix">
+    <form action="user.php" method="post">
+        <br />
+        <table width="70%" border="0" align="center">
+          <tr>
+            <td colspan="2" align="center"><strong>{$lang.input_answer}</strong></td>
+          </tr>
+          <tr>
+            <td width="29%" align="right">{$lang.passwd_question}：</td>
+            <td width="61%">{$passwd_question}</td>
+          </tr>
+          <tr>
+            <td align="right">{$lang.passwd_answer}：</td>
+            <td><input name="passwd_answer" type="text" size="20" class="inputBg" /></td>
+          </tr>
+          <!-- 判断是否启用验证码{if $enabled_captcha} -->
+          <tr>
+            <td align="right">{$lang.comment_captcha}</td>
+            <td><input type="text" size="8" name="captcha" class="inputBg" />
+            <img src="captcha.php?is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?is_login=1&'+Math.random()" /> </td>
+          </tr>
+          <!--{/if}-->
+          <tr>
+            <td></td>
+            <td><input type="hidden" name="act" value="check_answer" />
+              <input type="submit" name="submit" value="{$lang.submit}" class="bnt_blue" style="border:none;" />
+              <input name="button" type="button" onclick="history.back()" value="{$lang.back_page_up}" style="border:none;" class="bnt_blue_1" />
+	    </td>
+          </tr>
+        </table>
+        <br />
+      </form>
+  </div>
+</div>
+</div>
+<!--{/if}-->
+
+<!-- {if $action eq 'reset_password'} -->
+    <script type="text/javascript">
+    {foreach from=$lang.password_js item=item key=key}
+      var {$key} = "{$item}";
+    {/foreach}
+    </script>
+     <div class="block">
+<div class="usBox">
+  <div class="usBox_2 clearfix">
+    <form action="user.php" method="post" name="getPassword2" onSubmit="return submitPwd()">
+      <br />
+      <table width="80%" border="0" align="center">
+        <tr>
+          <td>{$lang.new_password}</td>
+          <td><input name="new_password" type="password" size="25" class="inputBg" /></td>
+        </tr>
+        <tr>
+          <td>{$lang.confirm_password}:</td>
+          <td><input name="confirm_password" type="password" size="25"  class="inputBg"/></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="hidden" name="act" value="act_edit_password" />
+            <input type="hidden" name="uid" value="{$uid}" />
+            <input type="hidden" name="code" value="{$code}" />
+            <input type="submit" name="submit" value="{$lang.confirm_submit}" />
+          </td>
+        </tr>
+      </table>
+      <br />
+    </form>
+  </div>
+</div>
+</div>
+<!--{/if}-->
+<!--#找回密码界面 end-->
+
+<!--{if !(($action eq 'login') || ($action eq 'register') || ($action eq 'get_password'))}-->
+<div class="blank"></div>
+
+<!--{/if}-->
+</body>
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+{foreach from=$lang.passport_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var username_exist = "{$lang.username_exist}";
+</script>
+</html>

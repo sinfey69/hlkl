@@ -1,0 +1,28 @@
+{$header}
+<body>
+	<div class="main">
+		<div class="b-ready" style="border-bottom:1px solid #999999;">兑换说明</div>
+		
+		<p align="center" style="font-size:20px;height:50px;line-height:50px;">{$article_data.title}</p>
+		<p align='left' style="padding:0 5px;">
+			{if $article_data}
+			    {$article_data.content}
+			{else}
+			    错误地址<br/>
+			{/if}
+		</p>
+		<p align="center" style="padding:10px 0;font-family: 宋体; color: black; mso-bidi-font-size: 10.5pt; mso-bidi-font-family: 宋体; mso-font-kerning: 0pt">
+			<a href="javascript:history.back(-1)">回上一页</a>&nbsp;&nbsp;&nbsp;
+			<a href='index.php'>返回首页</a>
+		</p>
+	</div>
+</body>
+<script>
+$(function(){
+	$("table").width("auto");
+// 	$("td").attr("width","");
+// 	$("p").css("padding","0 10px");
+// 	$("table").css("padding","0 10px");
+});
+</script>
+</html>

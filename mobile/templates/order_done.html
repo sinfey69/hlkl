@@ -1,0 +1,28 @@
+{$header}
+<body>
+	<div class="main">
+         
+        <div class="good-title">您的订单已提交成功!</div>
+           
+        <div class="list-a" >
+            <div class="item-a" style="border-bottom:0;">
+                <ul>
+                    <li>请记住您的订单号：<span style="color: #FF0000;font-size: 20px;">{$order.order_sn}</span></li>
+                    <li>您选定的配送方式为：<span style="color: #FF0000;font-size: 20px;">{$order.shipping_name}</span></li>
+                    <li>您选定的支付方式为：<span style="color: #FF0000;font-size: 20px;">{$order.pay_name}</span></li>
+                    <li>您的应付款金额为：<span style="color: #FF0000;font-size: 20px;">{$order.order_amount}</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        {$pay_online}
+        <div class="good-title" style="border-bottom:0;">{$order_submit_back}</div>
+                  
+    </div>
+</body>
+<script>
+$(function(){
+	$("input").addClass('txt4');
+});
+</script>
+</html>

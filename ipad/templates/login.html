@@ -1,0 +1,119 @@
+{$header}
+<body>
+	<div class="main">
+		<div class="slide"><img border="0" src="./templates/images/silde.jpg"/></div>
+        
+        <div class="title">
+        	<a href="javascript:changeL(1);" class="change" id="l1">登录</a><span>|</span><a href="javascript:changeL(2);" class="default" id="l2">注册</a>
+		</div>
+        <form action="user.php?act=do_login"  id="login" method="post">
+        
+	        {if $login_faild eq 1}
+		        <div class="mod-login" style="height:60px;">
+		        	<div class="l-left">&nbsp;</div>
+					<div class="l-right"><span class="red">用户名或密码错误,请重新输入</span></div>
+			    </div>
+			{/if}
+			
+	        <div class="mod-login">
+	        	<div class="l-left">用户名：</div>
+	            <div class="l-right"><input name="username" type="text" class="txt"/></div>
+	            <div class="clear"></div>
+	        </div>
+	       
+	        <div class="mod-login">
+	        	<div class="l-left">密	码：</div>
+	            <div class="l-right"><input name="password" type="password" class="txt"/></div>
+	            <div class="clear"></div>
+	        </div>
+	        
+	         <!--  <div class="mod-login">
+	        	<div class="l-left">&nbsp;</div>
+	            <div class="l-right">找回密码<span class="ln">|</span><span class="red">兑换说明</span></div>
+	            <div class="clear"></div>
+	        </div>
+	        -->
+	        
+	        <div class="sub">
+	        	<input type="submit" value="" class="sub1"/><span></span><input type="button" value="" class="sub2" onclick="location.href='user.php';"/>
+	        </div> 
+        </form> 
+        
+        <form action="user.php?act=act_register"  id="reister" method="post" style="display:none;">
+        
+		    <div class="mod-login" id="dis" style="height:60px;display:none;">
+		        	<div class="l-left">&nbsp;</div>
+					<div class="l-right"><span class="red" id="error"></span></div>
+					<div class="clear"></div>
+			</div>
+
+			
+	        <div class="mod-login">
+	        	<div class="l-left">用户名：</div>
+	            <div class="l-right"><input id="mobile" name="username" type="text" class="txt"/></div>
+	            <div class="clear"></div>
+	        </div>
+	       
+	        <div class="mod-login">
+	        	<div class="l-left">密	码：</div>
+	            <div class="l-right"><input name="password" type="password" class="txt"/></div>
+	            <div class="clear"></div>
+	        </div>
+
+	        <div class="mod-login">
+	        	<div class="l-left">重复密码：</div>
+	            <div class="l-right"><input name="repassword" type="password" class="txt"/></div>
+	            <div class="clear"></div>
+	        </div>
+
+	        <div class="mod-login">
+	        	<div class="l-left">验证码：</div>
+	            <div class="l-right"><input name="code" type="text" class="txt6" style=""/><input type="button" value="获取手机验证码" class="getb" onclick="sendSms();"/></div>
+	            <div class="clear"></div>
+	        </div>
+	        
+	        	        	        
+	         <div style="font-size: 100%;padding: 0 0 20px 0px;text-align: center;">如果一分钟后没有收到，可以重新获取验证码</div>
+	         <div style="font-size: 100%;padding: 0 0 20px 0px;text-align: center;"><img border="0" src="./templates/images/gg.png"/>我有阅读《注册条件与兑换条件》</div>        
+	        <div class="sub">
+	        	<input type="submit" value="" class="sub0"/><span></span><input type="button" value="" class="sub2" onclick="location.href='user.php';"/>
+	        </div> 
+        </form>
+                   
+    </div>
+</body>
+<script>
+	function sendSms(){
+		var mobile = $("#mobile").val();
+		$.ajax({
+			   type: "POST",
+			   url: "user.php?act=send",
+			   data: "mobile="+mobile,
+			   dataType: "JSON",
+			   success: function(str){
+				   var s = jQuery.parseJSON(str);
+					if(s.code == 2){
+						$("#dis").hide();
+					}else{
+						$("#dis").show();
+						$('#error').html(s.msg);
+					}
+			   }
+			});	
+
+	} 
+	function changeL(id){
+		if(id == 1){
+			$("#l1").attr('class','change');
+			$("#l2").attr('class','default');
+			$("#login").show();
+			$("#reister").hide();
+		}else{
+			$("#l1").attr('class','default');
+			$("#l2").attr('class','change');	
+			$("#login").hide();
+			$("#reister").show();
+		}
+	}
+</script>
+</html>

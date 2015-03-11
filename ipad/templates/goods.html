@@ -1,0 +1,95 @@
+{$header}
+<body>
+	<div class="main">
+         <form action="flow.php?step=add_to_cart" method="post">
+        <div class="good-title">{$goods_info.goods_name}</div>
+        
+        <div class="good-pic">
+        	{if $pictures}
+        		<img border="0" src="../../{$pictures.0.img_url}" width="640" height="376"/>
+        	{/if}
+        </div>
+        
+        <div class="list-a">
+            <div class="item-a">
+                <ul>
+                	{foreach from=$goodattr item=good key=key}
+                		{if $good.attr_id neq 4}
+                    	<li><span>{$good.attr_name}</span>{$good.attr_value}</li>
+                    	{/if}
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="list-a">
+        	<div class="item-a"><ul><li><span>单价：</span><font color="#ba1a22" size="+2">{$goods_info.exchange_integral}</font>积分<font color="#ba1a22" size="+2">+{$goods_info.goods_price}</font>元话费</li></ul></div>
+        </div>
+
+        <div class="list-a">
+        	<div class="item-a">
+            	<ul><li style="font-size:16px;">
+            	<span style="font-size:18px;">颜色：</span>
+            	{foreach from=$goodattr item=good key=key}
+            		{if $good.attr_id eq 4}
+      					<input type="radio" name="attr_id" value="{$good.goods_attr_id}" checked>{$good.attr_value}
+	            	{/if}
+	                <!-- <input type="button" class="i-change" value="象牙白"><b></b> -->
+                {/foreach}
+               </li></ul>
+            </div>
+        </div>
+		
+	        <div class="list-a">
+	        	<div class="item-a">
+	            <ul><li>
+	            	<span>数量：</span>
+					<input type="button" class="i-small" value="─" id="min"><input type="text" value="1" class="i-middle" name="number"/><input type="button" class="i-small" value="┼" id="sum">
+	                </li></ul>
+	            </div>
+	        </div>
+	        
+	        <div class="list-b">
+	        	<input type="hidden" name="id" value="{$goods_id}"/>
+				<input type="submit" value="加入购物车" class="b-defalut"/>
+	            <span></span>
+	            <!--  <input type="button" value="立即兑换" class="b-change" />-->
+	        </div>
+        </form>
+         
+         <div class="good-content">
+         	<div class="more"></div>
+            <div class="msg">
+            	{if $pictures}
+            		{foreach from=$pictures item=pic}
+            			<div><img border="0" width="640px;" src="../../{$pic.img_url}"/></div>
+            		{/foreach}
+            	{/if}
+            </div>
+         </div>                    
+    </div>
+</body>
+<script>
+	$(function(){
+		$("#min").click(function(){
+			var v = parseInt($(".i-middle").val());
+			if(v < 2){
+				v = 1;
+			}else{
+				v = v-1;
+			}
+			$(".i-middle").val(v);
+		});
+		
+		$("#sum").click(function(){
+			var v = parseInt($(".i-middle").val());
+			if(v > 99){
+				v = 99;
+			}else{
+				v = v+1;
+			}
+			$(".i-middle").val(v);
+		});
+	});
+</script>
+</html>

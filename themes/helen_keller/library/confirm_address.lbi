@@ -1,0 +1,2 @@
+<p><strong>寄送至：</strong>{$consignee.province}{$consignee.city}{$consignee.district}{$consignee.address}</p>
+<p><strong>收件人：</strong>（{$consignee.consignee}）收   {if $consignee.tel}{$consignee.tel}{else}{$consignee.mobile}{/if}</p>

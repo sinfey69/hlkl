@@ -1,0 +1,19 @@
+
+
+2014-05-28 17:52:22
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>4080</code>
+<msg>同一手机号码同一秒钟之内发送频率不能超过1条</msg>
+<smsid>0</smsid>
+</SubmitResult>
+
+2014-05-28 17:52:27
+<?xml version="1.0" encoding="utf-8"?>
+<SubmitResult xmlns="http://106.ihuyi.com/">
+<code>2</code>
+<msg>提交成功</msg>
+<smsid>15648467</smsid>
+</SubmitResult>
+
+2014-05-28 17:52:28

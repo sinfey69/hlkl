@@ -1,0 +1,227 @@
+{$header}
+<script type="text/javascript" src="./templates/js/utils.js"></script>
+<script type="text/javascript" src="./templates/js/transport.js"></script>
+{insert_scripts files="../js/listtable.js"}
+
+<script type="text/javascript">
+	var is_real = 0;
+	$(function(){ 
+	     $("#startbtn").click(function(){
+	    	$(".sure").hide();
+	        lottery(); 
+	     });
+	     
+	     $(".mi-right").click(function(){	    	 
+	    	 $("#intro2").hide();
+	    	 $("#intro1").show();
+	    	 /*$(".message").height("710px");*/
+	     });
+	    	 
+	     $(".mi-left").click(function(){
+	    	 $("#intro1").hide();
+	    	 $("#intro2").show();
+	    	 /*$(".message").height("400px");*/
+	    	 maquer();
+	     });
+	     
+	     $(".start").click(function(){
+	    	 $(".sure").show();
+	     });
+	     	    
+	     $("#close_sure").click(function(){
+	    	 $(".sure").hide();
+	     });
+		 $("#close_select").click(function(){
+	    	 $(".select").hide();
+	     });
+		 $("#show_select").click(function(){
+	    	 $(".select").show();
+			 GetList();
+	     });
+	}); 
+	
+	function lottery(){ 
+	    $.getJSON("data.php?t="+new Date().getTime(),function(json){ 
+				var p = json.prize;
+				if( json.code == -1){
+					alert(p);
+					return false;
+				}
+	            $("#startbtn").unbind('click').css("cursor","default"); 
+				var a = json.angle; 
+	            $(".start").rotate({ 
+	                duration:3000, //转动时间 
+	                angle: 0, //默认角度
+	                animateTo:1800+a, //转动角度 
+	                easing: $.easing.easeOutSine, 
+	                callback: function(){
+	                	if(json.code == 0){
+	                		alert(p);
+	                	}else{
+	                		if(is_real === 1){
+								$(".g-b").html('恭喜你，抽中“'+p+'”');
+								$(".did").val(json.did);
+								$("#address_list").html(json.consignee);
+								$(".get").show();
+							}else{
+								alert('恭喜你，抽中“'+p+'”');
+							}
+	                	}
+	                     
+	                    $("#startbtn").click(function(){
+	                    	$(".sure").hide(); 
+	                    	lottery(); 
+	                    }).css("cursor","pointer");	                    
+	                } 
+	            }); 
+	    }); 
+	}
+	
+	function maquer(){	
+	    setInterval(function(){
+	        $('#intro2 li:first').animate({'height':'0','opacity': '0'}, 'slow', function() {
+	          $(this).removeAttr('style').insertAfter('#intro2 li:last');
+	        });
+
+	    },1000);
+	    
+	    //$(this).attr('disabled',true);
+	    //return;
+	}
+
+	function setWidth(){
+		/*
+		var w = $(".randon").width();
+		if(w == 320){
+			$('.start').css('left','40%');
+			$('.start').css('top','45%');
+		}else if(w == 360){
+			$('.start').css({'left':'41.5%'});
+		}else if(w == 400){
+			$('.start').css({'left':'42%','top':'43%'});
+		}else if(w == 480){
+			$('.start').css({'left':'44%','top':'50%'});
+		}else {
+			$('.randon > img').css({width: '480px',height:'581px'});
+			$('.start').css('left','44%');
+		}*/
+		var s_t = $('.start').position().top;
+		var s_l = $('.start').position().left;
+		var r_h = $(".randon").height();
+		var r_w = $(".randon").width();
+		$('.sure').css({'left':s_l-(r_w/3.5)+'px','top':s_t-(r_h/10)+'px'});
+	}
+	function GetList(){
+		Ajax.call('draw.php?is_ajax=1', 'act=query', resultList, 'POST', 'JSON');
+	}
+	function resultList(result){
+		if(!result.error){
+			$('#listDiv').html(result.content);
+			var s_h = $(".select").height();
+			var r_h = $(".randon").height();
+			$(".select").css({"top":(r_h/2)-(s_h/2)+'px'});
+		}else{
+			alert(result.message);
+			$('#listDiv').html('请先登录后查看');
+		}
+	}
+</script>
+<style>
+td{vertical-align: middle;}
+</style>
+
+<body onload="setWidth();">
+	<div class="main jifen">
+		<div style="text-align:center;background-color: #fff;"><img border="0" src="./templates/images/logo.gif"/><br><span style="font-size:15px;">海 伦 凯 勒 眼 镜 积 分 商 城</span></div>
+		<form id="sub" action="good.php" method="POST" style="background-color: #fff;">
+			<div class="mod-search">	        	
+		            <div class="s-input"><input type="text" class="txt1" name="search" value=""/></div>
+		            <div class="s-icon" onclick="$('#sub').submit();">搜 索</div>
+		            <div style="float:left;height:35px;line-height:35px;padding-left:3px;"><a href="user.php?act=getmsg&id=19" style="color:#ea64a1;"> 兑换说明</a></div>
+	        </div>
+        </form>
+                 
+		<div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img width="75" height="75" border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img width="75" height="75" border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img width="75" height="81" border="0" src="./templates/images/nav3-c.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img width="75" height="75" border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+        <div class="randon">
+        	<img border="0" src="./templates/images/randon820.jpg" width="100%" height="" id="randon"/>
+        	<div class="start" id=><img border="0" src="./templates/images/start.png" width="60" height="115"/></div>
+            <div class="sure" style="display:none">
+            	<div class="s-up">1积分获得一次抽奖机会</div>
+                <div class="s-down"></div>
+                <div class="s-botton"><input type="button" value="确定" class="botton1" id="startbtn"/><span></span><input id="close_sure" type="button" value="退出" class="botton2"/></div>
+            </div>
+			<div class="select" style="display:none;">
+			<div id="listDiv">
+				<table>
+					<tr>
+						<th colspan="4">我的中奖情况</th>
+					</tr>
+					<tr>
+						<td>抽奖时间</td>
+						<td>奖项</td>
+						<td>收货地址</td>
+						<td>使用积分</td>
+					</tr>
+					<tr>
+						<td colspan="4">加载中...</td>
+					</tr>
+				</table>
+			</div>
+			<div class="s-botton" style="padding-bottom: 10px;"><input type="button" value="关闭" id="close_select" class="botton2"/></div>
+			</div>
+
+	     <div class="get" style="display:none;">
+	        <div class="g-b"></div>
+	    </div>  
+		<div style="width: 100%;position: absolute;bottom: 5px;text-align:center;font-size: 14px;font-weight: bold;"><a style="color:#000;" id="show_select" href="javascript:void(0);">查看我的中奖情况</a></div>
+		
+	    </div>  
+		<div style="width: 100%;clear:both;;text-align:center;font-size: 14px;font-weight: bold;color:#ff0000;">特别声明，因浏览器兼容问题，实际中奖结果以中奖弹出提示为准</div>
+			<script>$(function() {
+				window.__Object_toJSONString = Object.prototype.toJSONString;
+				delete Object.prototype.toJSONString;
+			});window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		</div>
+        
+        <div class="mod-intro">
+        	<div class="mi-left"><img border="0" width="100%" src="./templates/images/item1.jpg"/></div>
+            <div class="mi-right"><img border="0" width="100%" src="./templates/images/item2.jpg"/></div>
+        </div>
+
+
+		<div class="message jifen">
+        	<div id="intro1" class="mess-box">
+				<h2>活动时间：</h2>
+        		<p>2014年8月20日（10:00—24:00）</p> 
+				<h2>活动内容：</h2>
+        		<p>即日参与幸运大转盘抽奖活动，积分商城会员用户可使用1积分兑换一次抽奖机会。</p>
+        		<h2>活动奖励：</h2>
+        		<p>特等奖：200元话费，共抽取2名</p>
+        		<p>一等奖：100元话费，共抽取5名</p>
+        		<p>二等奖：50元话费，共抽取12名</p>
+        		<p>三等奖：10元话费，共抽取250名</p>
+        		<p>幸运奖：5元话费，共抽取1200名</p>
+        		<h2>活动规则：</h2>
+        		<p>1、会员用户可用1积分兑换一次抽奖机会，积分即时扣减。</p>
+        		<p>2、中奖用户名单将实时公布在网站上，活动结束后5个工作日内，话费将直接充值到参与抽奖的手机号码，不可兑换实物或现金。</p>
+        		<p>3、如有下述任一情形：使用任何不正当的手段参加活动、已参加满送活动的、主办方及其关联公司（包括代理商及批发商）的员工及其家属，本站有权取消其参加本次活动的资格。</p>
+        		<p>4、积分抽奖规则之最终解释权归本站，感谢您对海伦凯勒眼镜、海俪恩眼镜的支持。</p>
+				<h2>温馨提示：</h2>
+        		<p>充值成功后有短信提醒，如遇月末月初充值高峰，可能会有短信延迟现象，建议用户拨打各运营商电话（移动：10086 联通：10010 电信：10000）进行充值查询；如话费长时间不到账，可与本站客服0592-5099060联系。</p>
+			</div>
+            <ul id="intro2" style="display:none;height:350px;">
+            	{foreach from=$draw item=val}
+            		<li>用户[<span>{$val.mobile}</span>]抽中了[<span>{$val.name}</span>]</li>
+            	{/foreach}
+            </ul>
+        </div>
+                        
+    </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $user_info}
+<b class="username">会员：{$user_info.username}&nbsp;&nbsp;|&nbsp;&nbsp;{$lang.hello}，{$lang.welcome_to}{$shop_name}！</b>&nbsp;&nbsp;
+{$user_info.jf}&nbsp;&nbsp;
+<a href="user.php?act=logout" style="color:#535353;">{$lang.user_logout}</a>&nbsp;
+{else}
+{$lang.welcome} <a  href="user.php" style="color: #535353">登录</a>&nbsp;|&nbsp;  
+<a style="margin-right:10px;color: #535353" href="user.php?act=register">注册</a>&nbsp;
+{/if}

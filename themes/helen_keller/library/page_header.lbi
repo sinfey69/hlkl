@@ -1,0 +1,106 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+{if $stats_code}
+<div align="left" style="display:none">{$stats_code}</div>
+{/if}
+
+<script language="javascript"> 
+<!--
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+//-->
+</script>
+
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+var btn_buy = "{$lang.btn_buy}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+</script>
+<div class="headerInfo">
+  <div class="Landing clearfix">
+    <div style="float:left; color:#535353;padding-left:296px;">
+       <a href="#">返回官网</a>
+    </div>
+    <div style="float:right; color:#535353; margin-right: 8px;">
+        <!--{if $navigator_list.top}-->
+	    <!-- {foreach name=nav_top_list from=$navigator_list.top item=nav} -->
+               &nbsp;<a href="{$nav.url}"  style="color:#535353"<!-- {if $nav.opennew eq 1} --> target="_blank" <!-- {/if} -->>{$nav.name}</a>
+               <!-- {if !$smarty.foreach.nav_top_list.last} -->
+                 |
+               <!-- {/if} -->
+            <!-- {/foreach} -->
+	<!-- {/if} -->
+    </div>
+    <div style="float:right; color: #535353; margin-left: 8px;">
+      {insert_scripts files='transport.js,utils.js'}
+	<font id="ECS_MEMBERZONE" >
+          {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} 
+        </font>
+    </div>
+  </div>
+  <div class="logo" id="logo">
+    <div id="4114">
+       <a href="index.php"><img src="images/logo.gif" border="0"/></a>
+    </div>
+  </div>
+  <div id="Nav" class="Nalist">
+    <div id="4119" style="width:1400px;height:24px;background:url(images/nav-bg.png) no-repeat;">
+      <ul class="MenuList" >
+         <li {if $navigator_list.config.index eq 1} class="curs" {/if}>{if $navigator_list.config.index eq 1}<span class="l"></span><span class="r"></span>{/if}<a href="../index.php">{$lang.home}</a></li>
+		 <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+			<li {if $nav.active eq 1} class="curs"{/if}>{if $nav.active eq 1} <span class="l"></span><span class="r"></span>{/if}<a href="{$nav.url}" {if $nav.opennew eq 1}target="_blank" {/if}>{$nav.name}</a></li>
+		 <!-- {/foreach} -->
+      </ul>     
+    </div>
+  </div>
+  <div class="fr" style="position:relative; top:20px;right:30px;">
+      <span class="my_pro"><!--{$smarty.session.province}-->&nbsp;&nbsp;<!--{$smarty.session.supplier}--></span>
+      <a href="flow.php?step=cart"><span class="my_cart">去购物车结算</span></a>
+  </div>
+  <div class="Search">
+   <script type="text/javascript">
+    {literal}
+    <!--
+    function checkSearchForm()
+    {
+        if(document.getElementById('keyword').value)
+        {
+            return true;
+        }
+        else
+        {
+            alert("{$lang.no_keywords}");
+            return false;
+        }
+    }
+    -->
+    {/literal}
+    </script>
+    <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+       <input name="keywords" type="text" id="keyword" placeholder="请输入你要查找的商品" onclick="javascript:this.value='';"/>
+       <input name="btsearch" type="submit" id="btsearch" value="" />
+    </form>
+  </div> 
+</div>
+{insert_scripts files='jquery-1.7.2.min.js'}
+<script type="text/javascript">
+/*
+$(document).ready(function(){
+   $(function(){
+        var navH = $("#Nav").offset().top; 
+	 
+        $(window).scroll(function(){  
+          var scroH = $(this).scrollTop();  
+	  if(scroH>=navH){ 
+	     $("#4119").css("position","fixed");
+	     $("#4119").css("top","0px");
+	  }else{
+	     $("#4119").css("position","static");
+	  }
+	});
+   });
+});*/
+</script>

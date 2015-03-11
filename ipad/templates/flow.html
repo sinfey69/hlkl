@@ -1,0 +1,65 @@
+{$header}
+<body>
+	<div class="main">
+	    <div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+		{foreach from=$list item=good}
+         <div class="item-good">
+         	<!--  <div class="ig-cb"><input type="checkbox" name=""/></div>-->
+         	<div class="ig-img"><img border="0" src="../../{$good.goods_img}" width="117" height="116"/></div>
+         	<div class="ig-msg" style="font-size:16px;width:185px;">
+         		<div class="im-top">{$good.integral}元积分+{$good.goods_price}元话费</div>
+         		<div class="im-bottom">颜色：{$good.goods_attr}</div>
+         	</div>
+         	<div class="ig-sm"><input class="i-small" type="button" value="─" onclick="mins({$good.rec_id});"><input id="v-{$good.rec_id}" class="i-middle" type="text" value="{$good.goods_number}"><input class="i-small" type="button" value="┼" onclick="sums({$good.rec_id});">			
+         	</div>
+         	<div class="ig-del"><a href="flow.php?step=del&id={$good.rec_id}">删除</a></div>
+         </div>
+         {/foreach}
+         <div class="item-total">总商品：<font color="red">{$num}</font>件<span></span>总积分：<font color="red">{$jf}</font>分<span></span>总话费：<font color="red">{$money}</font>元</div>          
+         
+         <div class="item-sub"><input type="button" value="去结算>" class="txt4" onclick="location.href='buy.php?act=checkout'"></div>
+    </div>
+</body>
+<script>
+	function sums(id){
+		var v = parseInt($("#v-"+id).val());
+		if(v > 99){
+			v = 99;
+		}else{
+			v = v+1;
+		}
+		goodup(id,v);
+		$("#v-"+id).val(v);
+	}
+	
+	function mins(id){
+		var v = parseInt($("#v-"+id).val());
+		if(v < 2){
+			v = 1;
+		}else{
+			v = v-1;
+		}
+		goodup(id,v);
+		$("#v-"+id).val(v);		
+	}
+	
+	function goodup(id,v){
+		if(id !='' && v !=''){
+			$.ajax({
+				   type: "POST",
+				   url: "flow.php?step=update",
+				   data: "id="+id+"&v="+v,
+				   success: function(msg){
+				    	location.href = 'flow.php';
+				   }
+				});	
+		}
+	}
+</script>
+</html>

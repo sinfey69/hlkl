@@ -1,0 +1,1 @@
+<?php exit;?>1420510663a:4:{i:0;a:2:{s:10:"article_id";s:2:"19";s:5:"title";s:18:"积分兑换说明";}i:1;a:2:{s:10:"article_id";s:2:"18";s:5:"title";s:12:"人才招聘";}i:2;a:2:{s:10:"article_id";s:2:"17";s:5:"title";s:12:"在线客服";}i:3;a:2:{s:10:"article_id";s:2:"16";s:5:"title";s:12:"联系电话";}}

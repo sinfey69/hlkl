@@ -1,0 +1,71 @@
+<!-- $Id: exchange_goods_info.htm 15544 2009-01-09 01:54:28Z zblikai $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,selectzone.js,validator.js"}
+<!-- start draw form -->
+<div class="tab-div">
+<form action="exchange_draw.php" method="post" name="PrizeForm">
+  <table width="90%" id="general-table">
+    <tr>
+      <td class="label">{$lang.prize_name}：</td>
+      <td><input type="text" name="prize_name" maxlength="60" size="20" value="{$prize.prize_name}" />{$lang.require_field}</td>
+    </tr>
+    <tr>
+      <td class="label">{$lang.count_limit}：</td>
+      <td><input type="text" name="count_limit" maxlength="10" size="10" value="{$prize.count_limit}" />{$lang.require_field}
+	   	 &nbsp;<span class="notice-span" {if $help_open}style="display:inline" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_limit}</span>
+	  </td>
+    </tr>
+    <tr>
+      <td class="label">{$lang.day_limit}：</td>
+      <td><input type="text" name="day_limit" maxlength="10" size="10" value="{$prize.day_limit}" />{$lang.require_field}
+	   	 &nbsp;<span class="notice-span" {if $help_open}style="display:inline" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_limit}</span>
+	  </td>
+    </tr>
+    <tr>
+      <td class="label">{$lang.is_real}：</td>
+      <td>
+		{if $prize}
+		<input name="is_real" type="radio" value="1" {if $prize.is_real eq 1}checked="checked"{/if}>是<input name="is_real" type="radio" value="0" {if $prize.is_real eq 0}checked="checked"{/if}>否
+		{else}
+		<input name="is_real" type="radio" value="1"  checked="checked">是<input name="is_real" type="radio" value="0">否
+		{/if}
+	  </td>
+    </tr>
+    <tr>
+      <td class="label">{$lang.is_prize}：</td>
+      <td>
+		{if $prize}
+		<input name="is_prize" type="radio" value="1" {if $prize.is_prize eq 1}checked="checked"{/if}>是<input name="is_prize" type="radio" value="0" {if $prize.is_prize eq 0}checked="checked"{/if}>否
+		{else}
+		<input name="is_prize" type="radio" value="1" checked="checked">是<input name="is_prize" type="radio" value="0">否
+		{/if}
+	   	 &nbsp;<span class="notice-span" {if $help_open}style="display:inline" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_prize}</span>
+	  </td>
+    </tr>
+    <tr>
+      <td class="label">{$lang.angle}：</td>
+      <td><textarea name="angle" cols="20" rows="5">{$prize.angle}</textarea>{$lang.require_field}
+		  <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_angle}</span>
+	  </td>
+    </tr>
+	<tr>
+      <td class="label">{$lang.odds}：</td>
+      <td>
+		<input type="text" name="odds" maxlength="10" size="10" value="{$prize.odds}" />%&nbsp;{$lang.require_field}
+     	&nbsp;<span class="notice-span" {if $help_open}style="display:inline" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_odds}</span>
+	  </td>
+    </tr>
+
+</table>
+
+  <div class="button-div">
+    <input type="hidden" name="pid" value="{$prize.pid}" />
+    <input type="hidden" name="did" value="{$did}" />
+	<input type="hidden" name="act" value="{$form_action}" />
+    <input type="submit" value="{$lang.button_submit}" class="button"  />
+    <input type="reset" value="{$lang.button_reset}" class="button" />
+  </div>
+</form>
+</div>
+<!-- end goods form -->
+{include file="pagefooter.htm"}

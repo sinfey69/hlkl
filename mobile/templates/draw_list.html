@@ -1,0 +1,50 @@
+<table>
+	<tr>
+		<th colspan="3">我的中奖情况</th>
+	</tr>
+	<tr>
+		<td width="50px">抽奖时间</td>
+		<td width="50px">奖项</td>
+		<td width="100px">收货地址</td>
+	</tr>
+	{if !empty($drawlist)}
+	{foreach from=$drawlist item=item key=key}
+	<tr>
+		<td>{$item.intime}</td>
+		<td>{$item.name}</td>
+		<td>{if $item.address_id eq 0}
+		-
+		{else}
+		{$item.province}{$item.city}{$item.district}{$item.address}&nbsp;&nbsp;{$item.consignee}
+		{/if}
+		</td>
+	</tr>
+	{/foreach}
+	{else}
+	<tr>
+		<td colspan="3">暂无抽奖记录</td>
+	</tr>
+	{/if}
+</table>
+{insert_scripts files="../js/utils.js"}
+
+<div id="turn-page">
+	共 <span id="totalRecords">{$record_count}</span> 条记录
+	<span id="page-link">
+	  {literal}<a href="javascript:listTable.gotoPageFirst()">{/literal}第一页</a>
+	  {literal}<a href="javascript:listTable.gotoPagePrev()">{/literal}上一页</a>
+	  {literal}<a href="javascript:listTable.gotoPageNext()">{/literal}下一页</a>
+	  {literal}<a href="javascript:listTable.gotoPageLast()">{/literal}最末页</a>
+	  <select id="gotoPage" onchange="listTable.gotoPage(this.value)">
+		{create_pages count=$page_count page=$filter.page}
+	  </select>
+	</span>
+</div>
+<script type="text/javascript" language="javaScript">
+	listTable.recordCount = {$record_count};
+	listTable.pageCount = {$page_count};
+
+	{foreach from=$filter item=item key=key}
+	listTable.filter.{$key} = '{$item}';
+	{/foreach}
+</script>

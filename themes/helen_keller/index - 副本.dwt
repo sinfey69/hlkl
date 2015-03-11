@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,index.js,user.js,transport.js,jquery-1.7.2.min.js'}
+<script type="text/javascript" src="js/action.js"></script>
+<script type="text/javascript" src="js/scrollpic.js"></script>
+<script type="text/javascript" src="js/roll.js"></script>
+<script>
+var $m = jQuery.noConflict(); 
+$m(document).scroll(function(){
+	var t = parseInt($m(document).scrollTop());
+	if(t < 650){
+		t = 650;
+	}
+	if(t > $m(document).height() - $m('.sideBar').height() - 260){
+		t = $m(document).height() - $m('.sideBar').height() - 260;
+	}
+	$m('.sideBar').css('top', t +'px');
+});
+</script>
+</head>
+<body>
+<div class="clearfix">
+   <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="pageBody index">
+   <div class="clearfix" style="width:1662px;margin: 0 auto;">
+     <!-- TemplateBeginEditable name="主广告位置" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+   </div>
+   <div class="pageBodyCont clearfix">
+            <div class="fl sideBar" style="position:absolute;">
+                <span class="userIcon mt30"><em></em><img src="images/pic/userIcon.jpg" /></span>
+                <ul class="leftNav">
+                    <li class="leftNav_top"></li>
+                    <li class="current"><a href="#">首页</a></li>
+                    <li class="space"><a href="#index_title02">缤纷好礼</a></li>
+                    <li><a href="#">超值好劵</a></li>
+                    <li class="space"><a href="#">积分抽奖</a></li>
+                    <li><a href="#index_title01">积分聚划算</a></li>
+                    <li class="space"><a href="#">个人中心</a></li>
+                    <li class="leftNav_btm"></li>
+                </ul>
+                <span class="qrCode"><a href="#"><img src="images/qrCode01.jpg" /><br />手机微商城</a></span>
+                <span class="qrCode"><a href="#"><img src="images/qrCode02.jpg" /><br />官方微信</a></span>
+            </div>
+            <div class="fr mainBody">
+                <h3 class="clearfix"><em class="fr">限时抢购，数量有限，售完提前下架</em><span id="index_title01" class="index_title01"></span></h3>
+                
+                <div class="index_ads clearfix">
+                    <span class="fl">
+                        <!-- TemplateBeginEditable name="首页—聚划算位置1" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="首页—聚划算位置2" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+                    </span>
+                    <span class="fr">
+                        <!-- TemplateBeginEditable name="首页—右侧广告位置" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+                    </span>
+                </div>
+                <div class="index_ads clearfix">
+                    <span class="fl">
+                        <!-- TemplateBeginEditable name="首页—聚划算位置3" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="首页—聚划算位置4" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+                    </span>
+                    <span class="fr"><!-- TemplateBeginEditable name="首页—本月爆款位置" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable --></span>
+                </div>
+                <div class="index_ads mb10">
+<!-- TemplateBeginEditable name="首页—中部广告位置" -->
+<!-- #BeginLibraryItem "/library/ad_position.lbi" -->
+
+<div class="ads">
+{insert name='ads' id=$ads_id num=$ads_num}
+</div>
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+                </div>
+          
+                <div class="clearfix" style="margin-bottom:10px;"><h3><em class="fr">更多优惠、更多惊喜、更多好礼</em><span id="index_title02" class="index_title02"></span></h3></div>
+          
+                <div class="indexPro clearfix">
+		<div class="box">
+	          <!--{foreach from=$cat_goods item=goods}-->
+                    <div class="proBox">
+		       <div class="proImg"><a href="{$goods.url}" title="{$goods.name}" target="_blank"><img src="{$goods.goods_img}" /></a></div>
+		       <div class="proName" title="{$goods.name}">{$goods.name}</div>
+		       <div class="proPri">
+		         <span class="fl"><font color="#ce2625" size="4" style="font-weight:bold;">{$goods.exchange_integral}</font>{$points_name}+<font color="#ce2625" size="4" style="font-weight:bold;">{$goods.goods_price}</font>话费</span>
+			 <span class="fr"><a href="javascript:addToCart({$goods.goods_id})">立刻换购</a></span>
+		       </div>
+		    </div>
+		  <!--{/foreach}-->
+		  </div>
+	        </div>
+            </div>
+   </div>
+</div>
+<!-- #BeginLibraryItem "/library/right.lbi" --><!-- #EndLibraryItem -->
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

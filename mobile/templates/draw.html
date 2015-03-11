@@ -1,0 +1,283 @@
+{$header}
+<script type="text/javascript" src="./templates/js/utils.js"></script>
+<script type="text/javascript" src="./templates/js/transport.js"></script>
+{insert_scripts files="../js/listtable.js"}
+
+<script type="text/javascript">
+	$(function(){ 
+	     $("#startbtn").click(function(){
+	    	$(".sure").hide();
+	        lottery(); 
+	     });
+	     
+	     $(".mi-right").click(function(){	    	 
+	    	 $("#intro2").hide();
+	    	 $(".mess-box").show();
+	    	 /*$(".message").height("710px");*/
+	     });
+	    	 
+	     $(".mi-left").click(function(){
+	    	 $(".mess-box").hide();
+	    	 $("#intro2").show();
+	    	 /*$(".message").height("400px");*/
+	    	 maquer();
+	     });
+	     
+	     $(".start").click(function(){
+	    	 $(".sure").show();
+	     });
+	     	    
+	     $("#close_sure").click(function(){
+	    	 $(".sure").hide();
+	     });
+		 $("#close_select").click(function(){
+	    	 $(".select").hide();
+	     });
+		 $("#show_select").click(function(){
+	    	 $(".select").show();
+			 GetList();
+	     });
+	}); 
+	
+	function lottery(){ 
+	    $.getJSON("data.php?t="+new Date().getTime(),function(json){ 
+				var p = json.prize;
+				if( json.code == -1){
+					alert(p);
+					return false;
+				}
+	            $("#startbtn").unbind('click').css("cursor","default"); 
+				var a = json.angle; 
+	            $(".start").rotate({ 
+	                duration:3000, //转动时间 
+	                angle: 0, //默认角度
+	                animateTo:1800+a, //转动角度 
+	                easing: $.easing.easeOutSine, 
+	                callback: function(){
+			        	if(json.is_prize == 0){
+	                		alert(p);
+	                	}else{
+							if(json.is_real == 1){
+								$(".g-b").html('恭喜你，抽中“'+p+'”');
+								$(".did").val(json.did);
+								$(".draw_id").val(json.draw_id);
+								$("#address_list").html(json.consignee);
+								$(".get").show();
+							}else{
+								alert('恭喜你，抽中“'+p+'”');
+							}
+	                	}
+	                     
+	                    $("#startbtn").click(function(){
+	                    	$(".sure").hide(); 
+	                    	lottery(); 
+	                    }).css("cursor","pointer");	                    
+	                } 
+	            }); 
+	    }); 
+	}
+	
+	function maquer(){	
+	    setInterval(function(){
+	        $('#intro2 li:first').animate({'height':'0','opacity': '0'}, 'slow', function() {
+	          $(this).removeAttr('style').insertAfter('#intro2 li:last');
+	        });
+
+	    },1000);
+	    
+	    //$(this).attr('disabled',true);
+	    //return;
+	}
+
+	function setWidth(){
+	 
+		var w = $("body").width();
+		if(w == 320){
+		//	$('.start').css('left','41%');
+		}else if(w == 360){
+		//	$('.start').css({'left':'41.5%'});
+		}else if(w == 400){
+		//	$('.start').css({'left':'42%','top':'43%'});
+		}else if(w == 480){
+		//	$('.start').css({'left':'44%','top':'50%'});
+		}else {
+		//	$('.randon > img').css({width: '480px',height:'581px'});
+		//	$('.start').css('left','44%');
+		}
+		var s_t = $('.start').position().top;
+		var s_l = $('.start').position().left;
+		var r_h = $(".randon").height();
+		var r_w = $(".randon").width();
+		$('.sure').css({'left':s_l-(r_w/3.5)+'px','top':s_t-(r_h/10)+'px'});
+	}
+	function GetList(){
+		Ajax.call('draw.php?is_ajax=1', 'act=query', resultList, 'POST', 'JSON');
+	}
+	function resultList(result){
+		if(!result.error){
+			$('#listDiv').html(result.content);
+			var s_h = $(".select").height();
+			var r_h = $(".randon").height();
+			$(".select").css({"top":(r_h/2)-(s_h/2)+'px'});
+		}else{
+			alert(result.message);
+			$('#listDiv').html('请先登录后查看');
+		}
+	}
+</script>
+<style>
+td{vertical-align: middle;}
+</style>
+
+<body onload="setWidth();">
+	<div class="main jifen">
+		<div style="text-align:center;background-color: #fff;"><img border="0" src="./templates/images/logo.gif"/><br><span style="font-size:15px;">海 伦 凯 勒 眼 镜 积 分 商 城</span></div>
+		<form id="sub" action="good.php" method="POST" style="background-color: #fff;">
+			<div class="mod-search">	        	
+		            <div class="s-input"><input type="text" class="txt1" name="search" value=""/></div>
+		            <div class="s-icon" onclick="$('#sub').submit();">搜 索</div>
+		            <div style="float:left;height:35px;line-height:35px;padding-left:3px;"><a href="user.php?act=getmsg&id=19" style="color:#ea64a1;"> 兑换说明</a></div>
+	        </div>
+        </form>
+                 
+		<div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img width="75" height="75" border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img width="75" height="75" border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img width="75" height="81" border="0" src="./templates/images/nav3-c.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img width="75" height="75" border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+        <div class="randon">
+        	<img border="0" src="../{$draw.roulette_img}" width="100%" height="" id="randon"/>
+        	<div class="start" id=><img border="0" src="./templates/images/start.png" width="60" height="115"/></div>
+            <div class="sure" style="display:none">
+            	<div class="s-up">{$draw.deduct}积分获得一次抽奖机会</div>
+                <div class="s-down"></div>
+                <div class="s-botton"><input type="button" value="确定" class="botton1" id="startbtn"/><span></span><input id="close_sure" type="button" value="退出" class="botton2"/></div>
+            </div>
+			<div class="select" style="display:none;">
+			<div id="listDiv">
+				<table>
+					<tr>
+						<th colspan="4">我的抽奖记录</th>
+					</tr>
+					<tr>
+						<td>抽奖时间</td>
+						<td>奖项</td>
+						<td>收货地址</td>
+						<td>使用积分</td>
+					</tr>
+					<tr>
+						<td colspan="4">加载中...</td>
+					</tr>
+				</table>
+			</div>
+			<div class="s-botton" style="padding-bottom: 10px;"><input type="button" value="关闭" id="close_select" class="botton2"/></div>
+			</div>
+
+	     <div class="get" style="display:none;">
+	        <div class="g-b"></div>
+	        <div class="g-c">
+				<span>请选择您的收货地址</span>
+				<form method="post" action="draw.php">
+				<div id="address_list"></div>
+				<input type="submit" value=" 提交">
+				<input class="did" type="hidden" name="did" value=''>
+				<input type="hidden" name="draw_id"  class="draw_id" value="" />
+				<input id="act" type="hidden" name="act" value='address'>
+	        </form>
+			</div>
+			<div class="g-c" style="padding-top: 0px;">
+				<span>使用新地址</span>
+				<form method="post" action="draw.php">
+				<div>
+					<table>
+						<tr>
+							<td align="right" width="70">收货人</td>
+							<td><input class="txt2" type="text" id="consignee" name="consignee" value="{$address.consignee}"/></td>                             
+						</tr>
+						<tr>
+							<td align="right">手机号码</td>
+							<td><input class="txt2" type="text" id="mobile" name="mobile" value="{if $address.mobile neq ''}{$address.mobile}{else}{$address.tel}{/if}" /></td>
+						</tr>
+						
+						<tr>
+							<td align="right">区域</td>
+							<td>
+								<select name="province" class="txt2" id="selProvinces" onchange="region.changed(this, 2, 'selCities')" >
+								<option value="0">---请选择省---</option>
+								<!-- {foreach from=$province_list item=province} -->
+								<option value="{$province.region_id}" {if $province.region_id eq $address.province}selected{/if}>{$province.region_name}</option>
+								<!-- {/foreach} -->
+								</select>
+								<br>
+								<select name="city" class="txt2" id="selCities" onchange="region.changed(this, 3, 'selDistricts')">
+									<option value="0">---请选择市---</option>
+								</select>
+								<br>
+								<select name="district" class="txt2" id="selDistricts">
+									<option value="0">---请选择区---</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							 <td align="right">详细地址</td>
+							 <td><input class="txt2" type="text" id="address" name="address" value="" size="50"/></td>
+						</tr>
+					</table>
+
+				</div>
+				<input type="submit" value="保存并使用新地址" onclick="return CheckForm();">
+				<input type="hidden" name="did" class="did" value="">
+				<input type="hidden" name="draw_id"  class="draw_id" value="" />
+				<input type="hidden" name="act" value="new_address">
+	        </form>
+			</div>
+	    </div>  
+		<div style="width: 100%;position: absolute;bottom: 5px;text-align:center;font-size: 14px;font-weight: bold;"><a style="color:#000;" id="show_select" href="javascript:void(0);">查看我的中奖情况</a></div>
+		
+	    </div>  
+		<div style="width: 100%;clear:both;;text-align:center;font-size: 14px;font-weight: bold;color:#ff0000;">特别声明，因浏览器兼容问题，实际中奖结果以中奖弹出提示为准</div>
+			<script>$(function() {
+				window.__Object_toJSONString = Object.prototype.toJSONString;
+				delete Object.prototype.toJSONString;
+			});window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		</div>
+        
+        <div class="mod-intro jifen">
+        	<div class="mi-left"><img border="0" width="100%" src="./templates/images/item1.jpg"/></div>
+            <div class="mi-right"><img border="0" width="100%" src="./templates/images/item2.jpg"/></div>
+        </div>
+        
+        <div class="message jifen">
+        	<!-- <p id="intro1"><img border="0" src="./templates/images/intro.jpg" width="100%"/></p> -->
+        	<div class="mess-box">
+				{$draw.draw_desc}
+        	</div>
+            <ul id="intro2" style="display:none;height:350px;">
+            	{foreach from=$draw_list item=val}
+            		<li>用户[<span>{$val.mobile}</span>]抽中了[<span>{$val.name}</span>]</li>
+            	{/foreach}
+            </ul>            
+        </div>
+                        
+    </div>
+</body>
+<script type="text/javascript">
+
+function CheckForm(){
+	var consignee = $('#consignee').val();
+	var mobile = $('#mobile').val();
+	var Districts = $('#selDistricts').val();
+	var address = $('#address').val();
+	//alert(consignee+mobile+Districts+address);
+	if(consignee == '' || mobile == '' || Districts < 1 || address == ''){
+		alert('新地址信息请填写完整');
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+</html>

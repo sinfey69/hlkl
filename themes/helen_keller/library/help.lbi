@@ -1,0 +1,25 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--{if $helps}-->
+<div class="clearfix" style="background:url(images/footbg.gif) repeat-x left top; padding-top:20px;">
+<div class="block1">
+  <div class="boxhelp mod1 mod2">
+  <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+   <div class="helpTitBg clearfix">
+    <div class="f_l">
+       <!-- {foreach name=help_list from=$helps item=help_cat} -->
+         <dl style=" position: relative; <!-- {if !$smarty.foreach.help_list.last} --> border-right:1px Solid #C4C4C4;<!-- {/if} -->">
+           <dt><a href='{$help_cat.cat_id}' title="{$help_cat.cat_name}">{$help_cat.cat_name}</a></dt>
+           <!-- {foreach from=$help_cat.article item=item} -->
+              <dd><a href="{$item.url}" title="{$item.title|escape:html}">{$item.short_title}</a></dd>
+           <!-- {/foreach} -->
+         </dl>
+        <!-- {/foreach} -->
+    </div>
+    <div class="f_r">
+       <div class="a_weibo">官方微博</div>
+       <div class="a_service" style="clear:right;">在线客服</div>
+    </div>
+  </div>
+</div>
+</div>
+<!--{/if}-->

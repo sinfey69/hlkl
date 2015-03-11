@@ -1,0 +1,787 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,shopping_flow.js'}
+<script type="text/javascript" src="js/action.js"></script>
+
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<div class="block1 clearfix">
+<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+</div>
+<!--主体内容 start-->
+<div class="block1" style="min-height:480px;">
+<!-- {if $step eq "cart"} -->
+<div class="flow clearfix">
+	<div class="flow-steps clearfix">
+		<dl>
+			<dt class="flow-sele-dt"><em class="flow-sele-em">1</em></dt>
+			<dd class="flow-sele-dd">1.我的购物车</dd>
+		</dl>
+		<dl>
+			<dt><em>2</em></dt>
+			<dd>2.填写核对订单信息</dd>
+		</dl>
+		<dl>
+			<dt><em>3</em></dt>
+			<dd>3.成功提交订单</dd>
+		</dl>
+		<dl>
+			<dt><em>4</em></dt>
+			<dd>4.确认收货</dd>
+		</dl>
+		<dl>
+			<dt><em>5</em></dt>
+			<dd>5.评价</dd>
+		</dl>
+	</div>
+</div>
+<div class="shopcart">
+	<form action="">
+		<ul class="cart-tit">
+			<li class="th-chk clearfix">
+				<em></em>全选
+			</li>
+			<li class="th-item">{$lang.goods_name}</li>
+			<li class="th-info">{$lang.goods_attr}</li>
+			<li class="th-price">{$lang.unit_price}</li>
+			<li class="th-amount">{$lang.number}</li>
+			<li class="th-op">{$lang.handle}</li>
+		</ul>
+		<div class="cart-con clearfix">
+		<!-- {foreach from=$goods_list item=goods} -->
+			<ul class="cart-order">
+				<li class="td-chk clearfix">
+					<em name="{$goods.rec_id}" data-id="{$goods.rec_id}" {if $goods.now_buy}class="selcbx-on"{/if}></em>
+				</li>
+				<li class="td-item">
+					<!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
+					<!-- {if $show_goods_thumb eq 1} -->
+						<a href="exchange.php?id={$goods.goods_id}&act=view" target="_blank">{$goods.goods_name}</a>
+					<!-- {elseif $show_goods_thumb eq 2} -->
+						<a href="exchange.php?id={$goods.goods_id}&act=view" target="_blank"><img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+					<!-- {else} -->
+						<a href="exchange.php?id={$goods.goods_id}&act=view" target="_blank"><img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /><p>{$goods.goods_name}</p></a>
+					<!-- {/if} -->
+					<!-- {if $goods.parent_id gt 0} 配件 -->
+					<span style="color:#FF0000">（{$lang.accessories}）</span>
+					<!-- {/if} -->
+					<!-- {if $goods.is_gift gt 0} 赠品 -->
+					<span style="color:#FF0000">（{$lang.largess}）</span>
+					<!-- {/if} -->
+					<!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+					<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a> <img src="images/package.gif" />
+					<div id="suit_{$goods.goods_id}" style="display:none;">
+							<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+								<a href="goods.php?id={$package_goods_list.goods_id}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+							<!-- {/foreach} -->
+					</div>
+				<!-- {else} 优惠活动 -->
+				{$goods.goods_name}
+				<!-- {/if} -->
+				</li>
+				<li class="td-info">
+					<div class="sel-info">
+						<!-- {foreach from=$goods.spe item=spe} -->
+						<ul class="sel-option">
+							<!-- {foreach from=$spe.values item=v} -->
+							<li attr-id="{$v.id}" title="{$spe.name}：{$v.label}">{$spe.name}：{$v.label}</li>
+							<!-- {/foreach} -->
+						</ul>
+						<em></em>
+						<!-- {/foreach} -->
+					</div>
+				</li>
+				<li class="td-price">{$goods.exchange_integral}{$points_name}+{$goods.goods_price}</li>
+				<li class="td-amount">
+					<div class="item-amount">
+					<!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
+					<a href="javascript:void(0);" title="" class="amount-minus">-</a>
+						<input id="goods_number_{$goods.rec_id}" type="text" value="{$goods.goods_number}" size="4" >
+					<a href="javascript:void(0);" title="" class="amount-plus">+</a>
+					<!-- {else} -->
+						{$goods.goods_number}
+					<!-- {/if} -->
+					</div>
+				</li>
+				<li class="td-op">
+					<!-- {if $smarty.session.user_id gt 0} 如果登录了，可以加入收藏 -->
+					<a href="location.href='flow.php?step=drop_to_collect&amp;id={$goods.rec_id}'; " >{$lang.drop_to_collect}</a>
+					<!-- {/if} -->
+					<a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_goods&amp;id={$goods.rec_id}'; " >{$lang.drop}</a>
+
+				</li>
+			</ul>
+		<!-- {/foreach} -->
+		</div>
+
+		<ul class="cart-accounts clearfix">
+			<li class="acc-chk">
+				<em></em>全选
+			</li>
+			<li class="acc-del">删除</li>
+			<li class="acc-buy"><a href="binfen.php" title="继续购买">继续购买</a></li>
+			<li class="acc-sel">已选商品: <strong>{$total.buy_goods_count}</strong> 件</li>
+			<li class="acc-inte">合计积分: <strong>{$total.buy_integral_amount}</strong> 分</li>
+			<li class="acc-tele">合计话费: <strong>{$total.buy_goods_amount}</strong> 元</li>
+			<li class="acc-sum"><a href="flow.php?step=checkout" title="去结算">去结算 &gt;</a></li>
+		</ul>
+	</form>
+</div>
+<div class="creditsexe credit-bottom">
+	<div class="creditit clearfix">
+	    <ul class="clearfix">
+		<!-- {if !empty($surpluslist)}-->
+	      <li class="seletit">剩下积分还可兑换</li>
+		  <li>你可能会喜欢的宝贝</li>
+		<!-- {else} -->
+	      <li class="seletit">你可能会喜欢的宝贝</li>
+		<!-- {/if} -->
+	    </ul>
+	    <div class="creadit-hint">
+	    	除去以上所花积分，您当前还剩<em>{$residue_integral}</em>积分，可以继续购物
+	    </div>
+    </div>
+    <div class="creditcon clearfix">
+	<!-- {if !empty($surpluslist)}-->
+      <div class="selecon">
+	  	<!-- {foreach from=$surpluslist item=list} -->
+        <dl>
+          <dt class="clearfix">
+            <a href="{$list.url}" title="{$list.name}">
+              <img src="{$list.goods_thumb}" alt="{$list.name}" title="{$list.name}" />
+            </a>
+           </dt>
+          <dd>
+            <strong>{$list.exchange_integral}</strong><span>积分 + </span><strong>{$list.goods_price}</strong><span>话费</span>
+            <p>{$list.name}</p>
+          </dd>
+        </dl>
+		<!-- {/foreach} -->
+      </div>
+	  <!-- {/if} -->
+      <div <!-- {if empty($surpluslist)}-->class="selecon"<!-- {/if} -->>
+		<!-- {foreach from=$maybe_like item=like} -->
+        <dl>
+          <dt class="clearfix">
+            <a href="{$like.url}" title="{$like.name}">
+              <img src="{$like.thumb}" alt="{$like.name}" title="{$like.name}" />
+            </a>
+           </dt>
+          <dd>
+            <strong>{$like.exchange_integral}</strong><span>积分 + </span><strong>{$like.goods_price}</strong><span>话费</span>
+            <p>{$like.name}</p>
+          </dd>
+        </dl>
+		<!-- {/foreach} -->
+      </div>
+    </div>
+ </div>
+ <!-- {if $smarty.session.user_id gt 0} -->
+ {insert_scripts files='transport.js'}
+ <script type="text/javascript" charset="utf-8">
+	function collect_to_flow(goodsId)
+	{
+		var goods        = new Object();
+		var spec_arr     = new Array();
+		var fittings_arr = new Array();
+		var number       = 1;
+		goods.spec     = spec_arr;
+		goods.goods_id = goodsId;
+		goods.number   = number;
+		goods.parent   = 0;
+		Ajax.call('flow.php?step=add_to_cart', 'goods=' + goods.toJSONString(), collect_to_flow_response, 'POST', 'JSON');
+	}
+	function collect_to_flow_response(result)
+        {
+          if (result.error > 0)
+          {
+            // 如果需要缺货登记，跳转
+            if (result.error == 2)
+            {
+              if (confirm(result.message))
+              {
+                location.href = 'user.php?act=add_booking&id=' + result.goods_id;
+              }
+            }
+            else if (result.error == 6)
+            {
+              openSpeDiv(result.message, result.goods_id);
+            }
+            else
+            {
+              alert(result.message);
+            }
+          }
+          else
+          {
+            location.href = 'flow.php';
+          }
+        }
+</script>
+
+<!-- {/if} -->
+<script type="text/javascript">
+$(function() {
+	window.__Object_toJSONString = Object.prototype.toJSONString;
+	delete Object.prototype.toJSONString;
+});
+
+// 实现推荐商品功能：剩余积分可兑换的商品推荐，进行tab切换
+var clickTab = function(){
+	$('.creditit li').click(function(){
+	   $(this).addClass('seletit').siblings().removeClass('seletit');
+	   $('.creditcon div').eq($(this).index()).addClass('selecon').siblings().removeClass('selecon');
+	})
+}
+clickTab();
+
+//鼠标移入，出现下拉框效果
+$(".sel-option").hover(function(){
+	var selOptionLen = $(this).find('li').length;
+	$(this).css({
+		'overflow':'visible',
+		'background':'#F7F7F7'
+	})
+	$(this).stop().animate({
+		'height' : 26 * selOptionLen + 'px'
+	})
+},function(){
+	$(this).css({
+		'overflow':'hidden'
+	})
+	$(this).stop().animate({
+		"height":"26px"
+	})
+});
+
+
+//实现点击ul中并选中li在div中显示
+$('.sel-option li').click(function(){
+  $(this).prependTo($(this).parent());
+  $(this).parent().css({'overflow':'hidden'});
+  $(this).parent().stop().animate({'height':"26px"},300);
+  var spec = $(this).attr('attr-id');
+  var rec_id = $(this).parent().parent().parent().siblings('.td-chk').children().eq(0).attr('data-id');
+  Ajax.call('flow.php?step=update_attr', 'id=' + rec_id+'&spec='+spec, accounts, 'POST', 'JSON');
+})
+
+//点击减，商品数量减一
+var amoutInput;
+$('.amount-minus').click(function(){
+	amoutInput = $(this).siblings('input');
+	var amountNow = parseInt(amoutInput.val());
+	if(amountNow == 1) {
+		$(this).css({'disabled':'true',cursor: "not-allowed"});
+	}
+	else {
+		var Obj = $(this).parent().parent().siblings('.td-chk').children().eq(0);
+		var rec_id = new Array();
+		rec_id = Obj.attr('data-id');
+		var buy = (Obj.hasClass('selcbx-on').toString() == 'false') ? 0 : 1;
+		amountNow--;
+		amoutInput.val(amountNow);
+		updateBuy(rec_id,buy,amountNow);
+	}
+
+})
+
+//点击加，商品数量加一
+$('.amount-plus').click(function(){
+	amoutInput = $(this).siblings('input');
+	var amountNow = parseInt(amoutInput.val());
+	var Obj = $(this).parent().parent().siblings('.td-chk').children().eq(0);
+	var rec_id = new Array();
+	rec_id = Obj.attr('data-id');
+	var buy = (Obj.hasClass('selcbx-on').toString() == 'false') ? 0 : 1;
+	amountNow++;
+	amoutInput.val(amountNow);
+	$(this).siblings('a').css({cursor: "pointer"});
+	updateBuy(rec_id,buy,amountNow);
+})
+
+//实现让用户输入数字
+$('.item-amount input').blur(function(){
+	var strInput = $(this).val();
+	var reg = /^[1-9]\d*$/;
+	if(!reg.exec(strInput)) {
+		strInput = 1;
+	}
+	$(this).val(strInput);
+	var rec_id = new Array();
+	var Obj = $(this).parent().parent().siblings('.td-chk').children().eq(0);
+	rec_id = Obj.attr('data-id');
+	var buy = (Obj.hasClass('selcbx-on').toString() == 'false') ? 0 : 1;
+	updateBuy(rec_id,buy,strInput);
+})
+
+//购物车实现勾选功能
+//全选功能
+function allSelcet(elem){
+	$(elem).eq(0).click(function(){
+		var hasBoolen = $(this).find('em').hasClass('selcbx-on').toString();
+		var buy = (hasBoolen == 'false') ? 1 : 0;
+		if(hasBoolen == 'false') {
+			$(this).find('em').addClass('selcbx-on');
+			$('.th-chk em').addClass('selcbx-on');
+			$('.td-chk em').addClass('selcbx-on');
+			$('.acc-chk em').addClass('selcbx-on');
+		} else {
+			$(this).find('em').removeClass('selcbx-on');
+			$('.th-chk em').removeClass('selcbx-on');
+			$('.td-chk em').removeClass('selcbx-on');
+			$('.acc-chk em').removeClass('selcbx-on');
+		}
+		var rec_id = new Array();
+		$('.td-chk em').each(function(index){
+			rec_id[rec_id.length] = $(this).attr('data-id');
+		}); 
+		updateBuy(rec_id,buy,0);
+	}) 
+}
+allSelcet('.cart-tit li');//前面的全选
+allSelcet('.cart-accounts li');//后面的全选
+
+//点击每一个子项
+$('.td-chk em').click(function(){
+	var hasBoolen = $(this).hasClass('selcbx-on').toString();
+	var rec_id = new Array();
+	rec_id = $(this).attr('data-id');
+	var buy = (hasBoolen == 'false') ? 1 : 0;
+
+	if(hasBoolen == 'false') {
+		$(this).addClass('selcbx-on');
+	}else {
+		$(this).removeClass('selcbx-on');
+		$('.cart-tit .th-chk em').removeClass('selcbx-on');
+		$('.cart-accounts .acc-chk em').removeClass('selcbx-on');
+	}
+	updateBuy(rec_id,buy,0);
+})
+$('.acc-del').click(function(){
+	if (confirm('{$lang.drop_goods_confirm}')){
+		var rec_ids = new Array();
+		$('.td-chk em').each(function(index){
+			if($(this).hasClass('selcbx-on').toString() == 'true'){
+
+				rec_ids[rec_ids.length] = $(this).attr('data-id');
+			}
+		}); 	
+		if(rec_ids.length > 0){		
+			Ajax.call('flow.php?step=batch_drop_goods', 'ids=' + rec_ids, accounts, 'POST', 'JSON');
+		}
+	}
+})
+function updateBuy(rec_id,buy,num){
+	Ajax.call('flow.php?step=update_cart', 'id=' + rec_id+'&buy='+buy+'&num='+num, accounts, 'POST', 'JSON');
+}
+
+function accounts(result){
+	if(result.code == 1){
+		$('.acc-sel strong').html(result.data.buy_goods_count);
+		$('.acc-inte strong').html(result.data.buy_integral_amount);
+		$('.acc-tele strong').html(result.data.buy_goods_amount);
+		$('.creadit-hint em').html(result.data.residue_integral);
+	}else if(result.code == -2){
+		alert(result.message);
+		$('#goods_number_'+result.data.id).val(result.data.num);
+	}else if(result.code == -3){
+		alert(result.message);
+		window.location.href="flow.php?step=cart";
+	}else if(result.code == 777){
+		window.location.href="flow.php?step=cart";
+	}
+}
+</script>
+<!-- {/if} -->
+
+
+<!-- {if $step eq "consignee"} -->
+<!-- 开始收货人信息填写界面 -->
+<div class="blank"></div>
+{insert_scripts files='region.js,utils.js'}
+<script type="text/javascript">
+	region.isAdmin = false;
+	{foreach from=$lang.flow_js item=item key=key}
+	var {$key} = "{$item}";
+	{/foreach}
+
+	{literal}
+	onload = function() {
+		if (!document.all)
+		{
+			document.forms['theForm'].reset();
+		}
+	}
+	{/literal}
+</script>
+<!-- 如果有收货地址，循环显示用户的收获地址 -->
+<!-- {foreach from=$consignee_list item=consignee key=sn} -->
+<form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkConsignee(this)">
+<!-- #BeginLibraryItem "/Library/consignee.lbi" --><!-- #EndLibraryItem -->
+</form>
+<!-- {/foreach} -->
+<!-- {/if} -->
+
+<!-- {if $step eq "checkout"} 开始订单确认界面 -->
+<div class="flow clearfix">
+	<div class="flow-steps clearfix">
+		<dl>
+			<dt><em>1</em></dt>
+			<dd>1.我的购物车</dd>
+		</dl>
+		<dl>
+			<dt class="flow-sele-dt"><em class="flow-sele-em">2</em></dt>
+			<dd class="flow-sele-dd">2.填写核对订单信息</dd>
+		</dl>
+		<dl>
+			<dt><em>3</em></dt>
+			<dd>3.成功提交订单</dd>
+		</dl>
+		<dl>
+			<dt><em>4</em></dt>
+			<dd>4.确认收货</dd>
+		</dl>
+		<dl>
+			<dt><em>5</em></dt>
+			<dd>5.评价</dd>
+		</dl>
+	</div>
+</div>
+<div class="deteaddress" id="ECS_ADDRESSLIST">
+	<!-- #BeginLibraryItem "/Library/checkout_address.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="deteinfo">
+	<h3>确定订单信息：</h3>
+	<form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkOrderForm(this)">
+	<script type="text/javascript">
+	var flow_no_payment = "{$lang.flow_no_payment}";
+	var flow_no_shipping = "{$lang.flow_no_shipping}";
+	</script>
+		<div style="display:none">
+			<!--{if $total.real_goods_count neq 0}-->
+				<!-- {foreach from=$shipping_list item=shipping} 循环配送方式 -->
+				<input name="shipping" type="radio" value="{$shipping.shipping_id}" {if $smarty.foreach.iteration.first}checked="true"{/if} supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" />{$shipping.shipping_name}
+				<!-- {/foreach} 循环配送方式 -->
+			<!--{else}-->
+			<input name = "shipping" type="radio" value = "-1" checked="checked"/>
+			<!--{/if}-->
+		</div>	
+		<div id="" class="deteinfo-tab">
+			<ul id="" class="detetit">
+				<li class="deti-treasure">商品</li>
+				<li class="deti-price">单价</li>
+				<li class="deti-amount">{$lang.number}</li>
+				<li class="deti-integ">积分小计</li>
+				<li class="deti-call">话费小计</li>
+			</ul>
+			<!-- {foreach from=$goods_list item=goods} -->
+			<ul id="" class="detecon clearfix">
+				<li class="deco-treasure">
+					<dl class="clearfix">
+						<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+						<dt>
+							<a href="#" title="图片">
+								<img src="images/shop_item0.jpg" alt="图片" title="图片" />
+							</a>
+						</dt>
+						<dd>
+							<p><a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a></p>
+							<span>{$goods.goods_attr|nl2br}</span>
+							<div id="suit_{$goods.goods_id}" style="display:none">
+									<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+							<a href="exchange.php?id={$package_goods_list.goods_id}&act=view" target="_blank">{$package_goods_list.goods_name}</a><br />
+									<!-- {/foreach} -->
+							</div>
+						</dd>
+						<!-- { else } -->
+						<dt>
+							<a href="exchange.php?id={$goods.goods_id}&act=view"  title="{$goods.goods_name}">
+								<img src="{$goods.goods_thumb}" alt="{$goods.goods_name}" title="{$goods.goods_name}" />
+							</a>
+						</dt>
+						<dd>
+							<p>
+								{$goods.goods_name}
+								<!-- {if $goods.parent_id > 0} -->
+								<span style="color:#FF0000">（{$lang.accessories}）</span>
+								<!-- {elseif $goods.is_gift} -->
+								<span style="color:#FF0000">（{$lang.largess}）</span>
+								<!-- {/if} -->
+							</p>
+							<span>{$goods.goods_attr|nl2br}</span>
+						</dd>
+						<!-- {/if} -->
+					</dl>
+				</li>
+				<li class="deco-price">{$goods.integral}积分+{$goods.goods_price}元话费</li>
+				<li class="deco-amount">{$goods.goods_number}</li>
+				<li class="deco-integ">{$goods.jfsubtotal}积分</li>
+				<li class="deco-call">{$goods.subtotal}元话费</li>
+			</ul>
+			<!-- {/foreach} -->
+			<div class="detemess ">
+				<p>留言：<input type="textarea" name="postscript" id="postscript"/></p>
+				<!-- <span>快递费：0.00元</span> -->
+			</div>
+			
+		</div>
+		<div class="detepayment clearfix" style="float: left;">
+			<div class="dete-pay-le">
+				<span>选择您的支付方式：</span>
+				<!-- {foreach from=$payment_list item=payment} -->
+				<!-- 循环支付方式 -->
+				<label for="payment_{$payment.pay_id}" {if $payment.pay_code eq 'alipay'}class="detalipay"{elseif $payment.pay_code eq 'umpay'}class="dettel"{/if}>
+					<input id="payment_{$payment.pay_id}" type="radio" name="payment" value="{$payment.pay_id}" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/>
+					<em></em>
+				</label>
+				<!-- {/foreach} 循环支付方式 -->
+			</div>
+		</div>
+		<div style="display:none;">
+			<!-- {if $how_oos_list} 是否使用缺货处理 -->
+				<!-- {foreach from=$how_oos_list key=how_oos_id item=how_oos_name} -->
+				<label>
+					<input name="how_oos" type="radio" value="{$how_oos_id}" {if $order.how_oos eq $how_oos_id}checked{/if} onclick="changeOOS(this)" />
+					{$how_oos_name}
+				</label>
+				<!-- {/foreach} -->
+			<!-- {/if} 缺货处理结束 -->
+		</div>
+		<div id="ECS_ORDERTOTAL">
+		<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
+		</div>
+	</form>
+</div>
+<!-- {/if} -->
+
+<!-- {if $step eq "done"} -->
+<div class="blank"></div>
+<!-- 订单提交成功 -->
+<div class="orderSuccess">
+ <div class="order_sn tc">{$lang.remember_order_number}：<font class="a">{$order.order_sn}</font></div>
+ <div class="shipping_name">
+	{$lang.select_payment}： <strong>{$order.pay_name}</strong>。<br />
+	{$lang.order_amount}： <strong class="f1">{$total.amount_formated}</strong><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;{$order.pay_desc}<br />
+	<!-- {if $pay_online} 如果是线上支付则显示支付按钮-->
+   {$pay_online}
+ <!-- {/if} -->
+ </div>
+ <!--{if $virtual_card}-->
+ <div class="shipping_name">
+ <!--{foreach from=$virtual_card item=vgoods}-->
+	<font class="f14b">{$vgoods.goods_name}</font><br />
+		<!--{foreach from=$vgoods.info item=card}-->
+			<!--{if $card.card_sn}-->
+			<strong>{$lang.card_sn}：</strong><font class="f1">{$card.card_sn}</font><br />
+			<!--{/if}-->
+			<!--{if $card.card_password}-->
+			<strong>{$lang.card_password}：</strong><font class="f1">{$card.card_password}</font><br />
+			<!--{/if}-->
+			<!--{if $card.end_date}-->
+			<strong>{$lang.end_date}：</strong>{$card.end_date}<br />
+			<!--{/if}-->
+		<!--{/foreach}-->
+	<!--{/foreach}-->
+ </div>
+ <!--{/if}-->
+	<p>现在，{$order_submit_back}</p>
+</div>
+<!-- {/if} -->
+
+
+<!-- {if $step eq "login"} -->
+<div class="blank"></div>
+{insert_scripts files='utils.js,user.js'}
+<script type="text/javascript">
+{foreach from=$lang.flow_login_register item=item key=key}
+	var {$key} = "{$item}";
+{/foreach}
+
+{literal}
+function checkLoginForm(frm) {
+	if (Utils.isEmpty(frm.elements['username'].value)) {
+		alert(username_not_null);
+		return false;
+	}
+
+	if (Utils.isEmpty(frm.elements['password'].value)) {
+		alert(password_not_null);
+		return false;
+	}
+
+	return true;
+}
+
+function checkSignupForm(frm) {
+	if (Utils.isEmpty(frm.elements['username'].value)) {
+		alert(username_not_null);
+		return false;
+	}
+
+	if (Utils.trim(frm.elements['username'].value).match(/^\s*$|^c:\\con\\con$|[%,\'\*\"\s\t\<\>\&\\]/))
+	{
+		alert(username_invalid);
+		return false;
+	}
+
+	if (Utils.isEmpty(frm.elements['email'].value)) {
+		alert(email_not_null);
+		return false;
+	}
+
+	if (!Utils.isEmail(frm.elements['email'].value)) {
+		alert(email_invalid);
+		return false;
+	}
+
+	if (Utils.isEmpty(frm.elements['password'].value)) {
+		alert(password_not_null);
+		return false;
+	}
+
+	if (frm.elements['password'].value.length < 6) {
+		alert(password_lt_six);
+		return false;
+	}
+
+	if (frm.elements['password'].value != frm.elements['confirm_password'].value) {
+		alert(password_not_same);
+		return false;
+	}
+	return true;
+}
+{/literal}
+</script>
+<!-- 开始用户登录注册界面 -->
+<div class="clearfix">
+ <div class="step_login fl">
+  <h4>用户登录</h4>
+	<form action="flow.php?step=login" method="post" name="loginForm" id="loginForm" onsubmit="return checkLoginForm(this)">
+		<table width="100%" border="0" cellpadding="5" cellspacing="0">
+					<tr>
+						<td width="30%" align="right" bgcolor="#ffffff">{$lang.username}</td>
+						<td width="70%" bgcolor="#ffffff"><input name="username" type="text" class="InputBorder" id="username" /></td>
+					</tr>
+					<tr>
+						<td align="right" bgcolor="#ffffff" valign="top">{$lang.password}</td>
+						<td bgcolor="#ffffff">
+						<input name="password" class="InputBorder" type="password" />
+						<a href="#blank" onclick="pwTips()">{$lang.get_password}？</a><br />
+						<div class="close" id="tips">
+						<span title="关闭" id="tipsClose" onclick=" pwTipsClose()"></span>
+						如果您忘记了密码，可以通过下面两种方式找回：<br />
+						1. <a href="user.php?act=qpassword_name">{$lang.get_password_by_question}</a><br />
+						2. <a href="user.php?act=get_password">{$lang.get_password_by_mail}</a>
+						</div>
+						<script type="text/javascript">
+						function pwTips(){
+						document.getElementById("tips").style.display = "block";
+						}
+						function pwTipsClose(){
+						document.getElementById("tips").style.display = "none";
+						}
+						</script>
+						</td>
+					</tr>
+					<!-- 判断是否启用验证码{if $enabled_login_captcha} -->
+					<tr>
+						<td align="right" bgcolor="#ffffff">{$lang.comment_captcha}</td>
+						<td bgcolor="#ffffff"><input type="text" size="8" name="captcha" class="InputBorder" />
+						<img src="captcha.php?is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onclick="this.src='captcha.php?is_login=1&'+Math.random()" /> </td>
+					</tr>
+					<!--{/if}-->
+					<tr>
+						<td align="right" bgcolor="#ffffff">&nbsp;</td>
+						<td bgcolor="#ffffff"><input type="checkbox" value="1" name="remember" id="remember" /><label for="remember">{$lang.remember}</label></td>
+          </tr>
+					<tr>
+						<td colspan="2" align="center" bgcolor="#ffffff">
+								<input type="submit" class="bnt_number2" name="login" value="{$lang.forthwith_login}" />
+								<!-- {if $anonymous_buy eq 1} 是否允许未登录用户购物 -->
+								<input type="button" class="bnt_number10" value="{$lang.direct_shopping}" onclick="location.href='flow.php?step=consignee&amp;direct_shopping=1'" />
+								<!-- {/if} -->
+								<input name="act" type="hidden" value="signin" />
+						</td>
+					</tr>
+		</table>
+	</form>
+ </div>
+ <div class="step_login fr">
+ <h4 class="h4bg">用户注册</h4>
+<form action="flow.php?step=login" method="post" name="formUser" id="registerForm" onsubmit="return checkSignupForm(this)">
+	 <table width="100%" border="0" cellpadding="5" cellspacing="0" >
+			<tr>
+				<td bgcolor="#ffffff" align="right" width="25%">{$lang.username}</td>
+				<td bgcolor="#ffffff"><input name="username" type="text" class="InputBorder" id="username" onblur="is_registered(this.value);" /><br />
+<span id="username_notice" style="color:#FF0000"></span></td>
+			</tr>
+			<tr>
+				<td bgcolor="#ffffff" align="right">{$lang.email_address}</td>
+				<td bgcolor="#ffffff"><input name="email" type="text" class="InputBorder" id="email" onblur="checkEmail(this.value);" /><br />
+<span id="email_notice" style="color:#FF0000"></span></td>
+			</tr>
+			<tr>
+				<td bgcolor="#ffffff" align="right">{$lang.password}</td>
+				<td bgcolor="#ffffff"><input name="password" class="InputBorder" type="password" id="password1" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" /><br />
+<span style="color:#FF0000" id="password_notice"></span></td>
+			</tr>
+			<tr>
+				<td bgcolor="#ffffff" align="right">{$lang.confirm_password}</td>
+				<td bgcolor="#ffffff"><input name="confirm_password" class="InputBorder" type="password" id="confirm_password" onblur="check_conform_password(this.value);" /><br />
+<span style="color:#FF0000" id="conform_password_notice"></span></td>
+			</tr>
+			<!-- 判断是否启用验证码{if $enabled_register_captcha} -->
+			<tr>
+				<td bgcolor="#ffffff" align="right">{$lang.comment_captcha}:</td>
+				<td bgcolor="#ffffff"><input type="text" size="8" name="captcha" class="InputBorder" />
+				<img src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onclick="this.src='captcha.php?'+Math.random()" /> </td>
+			</tr>
+			<!--{/if}-->
+			<tr>
+				<td colspan="2" bgcolor="#ffffff" align="center">
+						<input type="submit" name="Submit" class="bnt_number6" value="{$lang.forthwith_register}" />
+						<input name="act" type="hidden" value="signup" />
+				</td>
+			</tr>
+		</table>
+	</form>
+ </div>
+</div>
+<!-- 结束用户登录注册界面 -->
+<!-- {/if} -->
+</div>
+
+
+
+</div>
+<!--主体内容 end-->
+
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+{foreach from=$lang.passport_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var username_exist = "{$lang.username_exist}";
+var compare_no_goods = "{$lang.compare_no_goods}";
+var btn_buy = "{$lang.btn_buy}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+</script>
+</html>

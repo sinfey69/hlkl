@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+<script type="text/javascript" src="themes/helen_keller/js/mzp-packed-me.js"></script>
+<script type="text/javascript" src="themes/helen_keller/js/action.js"></script>
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<div class="block1 clearfix">
+<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="block1">
+   <div class="clearfix">
+       <div class="goodsimgbox fl">
+	  <div id="focuscont">
+             <!-- {if $pictures}-->
+			 <!--{foreach from=$pictures item=picture name=picture}-->
+			 {if $smarty.foreach.picture.iteration==1 }
+               <a style="" href="{$picture.img_url}" id="zoom1" class="MagicZoom MagicThumb" title="{$goods.goods_name|escape:html}">
+                  <img src="{$picture.img_url}" alt="{$goods.goods_name|escape:html}" width="450px" height="352px" style="border:1px solid #d2d0d0"/>
+               </a>
+			   {/if}
+			    <!--{/foreach}-->   
+             <!-- {else} -->
+                  <img src="{$goods.goods_img}" alt="{$goods.goods_name|escape:html}"/>
+             <!-- {/if}-->
+	  </div>
+
+          <!-- {if $pictures}-->
+          <div class="picture" id="imglist">
+			<!--{foreach from=$pictures item=picture name=picture}-->
+               <a href="{$picture.img_url}" rel="zoom1" rev="{$picture.img_url}" title="">
+                 <img src="{if $picture.thumb_url}{$picture.thumb_url}{else}{$picture.img_url}{/if}" alt="{$goods.goods_name}" {if $smarty.foreach.picture.iteration==1 }class="onbg"{else}class="autobg"{/if} /></a>
+            <!--{/foreach}-->                        
+          </div>  
+          <script type="text/javascript">
+	     mypicBg();
+          </script>
+          <!-- {/if}-->
+      </div>
+      <div class="goodstxtbox fr" style=" margin-right:15px; _margin-left: 20px; padding-top: 8px;">
+	 <h4 class="goodName">
+	  {$goods.goods_style_name}
+	  <div class="prev" style=" display: none">
+            {if $prev_good}
+              <a href="{$prev_good.url}" style="color:#CCC; font-size:12px;">上一个</a>
+            {/if}
+            {if $next_good}
+              <a href="{$next_good.url}" style="color:#CCC; font-size:12px;">下一个</a>
+            {/if}
+          </div>
+	 </h4>
+	 <form action="exchange.php?act=buy" method="post" name="ECS_FORMBUY" id="ECS_FORMBUY">
+
+        <!-- {if $cfg.show_goodssn} 显示商品货号-->
+	<div class="Goodpromotion" style="float:left; width:500px;">
+        {$lang.goods_sn}{$goods.goods_sn}
+	</div>
+        <!-- {/if} -->
+
+        <!-- {if $goods.goods_brand neq "" and $cfg.show_brand} 显示商品品牌-->
+	<div class="Goodpromotion" style="float:left; width:500px;">
+        {$lang.goods_brand}<a href="{$goods.goods_brand_url}" >{$goods.goods_brand}</a>
+	</div>
+        <!--{/if}-->
+
+        <!-- {if $cfg.show_goodsweight} 商品重量-->
+	<div class="Goodpromotion" style="float:left; width:500px;">
+        {$lang.goods_weight}{$goods.goods_weight}
+	</div>
+        <!-- {/if} -->
+	<div class="Goodpromotion" style="float:left; width:500px;">
+        {$lang.exchange_integral}<font class="shop" color="red">{$goods.goods_price}话费+{$goods.exchange_integral}积分</font>
+	</div>
+
+        <!-- {* 开始循环所有可选属性 *} -->
+        <!-- {foreach from=$specification item=spec key=spec_key} 循环规格开始 -->
+        {$spec.name}:<br />
+        <!-- {if $cfg.goodsattr_style eq 1} 规格显示方式：单选按钮 -->
+        <!-- {foreach from=$spec.values item=value key=key} -->
+        <label for="spec_value_{$value.id}">
+        <input type="radio" name="spec_{$spec_key}" value="{$value.id}" id="spec_value_{$value.id}" {if $key eq 0}checked{/if} />
+        {$value.label} </label><br />
+        <!-- {/foreach} -->
+        <!-- {else} 规格显示方式：下拉列表 -->
+        <select name="spec_{$spec_key}" class="TextInput">
+          <!-- {foreach from=$spec.values item=value key=key} -->
+          <option label="{$value.label}" value="{$value.id}">{$value.label} </option>
+          <!-- {/foreach} -->
+        </select>
+        <!-- {/if} 规格显示方式 -->
+        <!-- {/foreach} 循环规格结束 -->
+        <!-- {* 结束循环可选属性 *} -->
+        <input type="hidden" name="goods_id" value="{$goods.goods_id}" />
+<br />
+
+        <input type="submit" value=" " class="convert"/>
+	<input type="button" onclick="addToCart({$goods.goods_id})" value=" " class="addToCart"/>
+	
+	
+    </form>
+     
+        	</div>
+	</div>
+<!-- {if !empty($surpluslist)}-->
+  <div class="creditsexe">
+    <div class="creditit clearfix">
+      <ul class="clearfix">
+        <li class="seletit">剩下积分还可兑换</li>
+      </ul>
+    </div>
+    <div class="creditcon clearfix">
+      <div class="selecon">
+	  	<!-- {foreach from=$surpluslist item=list} -->
+        <dl>
+          <dt class="clearfix">
+            <a href="{$list.url}" title="{$list.name}">
+              <img src="{$list.goods_thumb}" alt="{$list.name}" title="{$list.name}" />
+            </a>
+           </dt>
+          <dd>
+            <strong>{$list.exchange_integral}</strong><span>积分 + </span><strong>{$list.goods_price}</strong><span>话费</span>
+            <p>{$list.name}</p>
+          </dd>
+        </dl>
+		<!-- {/foreach} -->
+      </div>
+    </div>
+  </div>
+  <!-- {/if} -->
+	<div class="infotit clearfix" id="com_b">
+	    <h2><span class="l"></span><span class="r"></span>{$lang.feed_goods_desc}</h2>
+		  <h2 class="h2bg"><span class="l"></span><span class="r"></span>{$lang.goods_attr}</h2>
+
+
+			<h2 class="h2bg"><span class="l"></span><span class="r"></span>{$lang.releate_goods}</h2>
+			<h2 class="h2bg"><span class="l"></span><span class="r"></span>{$lang.shopping_and_other}</h2>
+			<h2 class="h2bg"><span class="l"></span><span class="r"></span>购买记录</h2>
+	</div>
+	 <div class="tagcontent" id="com_v"></div>
+	 <div id="com_h">
+		   <blockquote>
+        {$goods.goods_desc}
+       </blockquote>
+			 <blockquote>
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+        <!-- {foreach from=$properties item=property_group key=key} -->
+        <tr>
+          <th colspan="2" bgcolor="#FFFFFF">{$key|escape}</th>
+        </tr>
+        <!-- {foreach from=$property_group item=property} -->
+        <tr>
+          <td bgcolor="#FFFFFF" align="left" width="30%" class="f1">[{$property.name|escape:html}]</td>
+          <td bgcolor="#FFFFFF" align="left" width="70%">{$property.value}</td>
+        </tr>
+        <!-- {/foreach}-->
+        <!-- {/foreach}-->
+       </table>
+       </blockquote>
+
+       <blockquote>
+	   <!-- #BeginLibraryItem "/library/goods_related.lbi" --><!-- #EndLibraryItem -->
+       </blockquote>
+       <blockquote>
+	   <!-- #BeginLibraryItem "/library/bought_goods.lbi" --><!-- #EndLibraryItem -->
+       </blockquote>
+       <blockquote>
+           <!-- #BeginLibraryItem "/library/bought_note_guide.lbi" --><!-- #EndLibraryItem -->
+       </blockquote>
+       </div>
+	<script type="text/javascript">reg("com");</script>
+	 <!-- TemplateBeginEditable name="右边可编辑区" -->
+	 <!-- #BeginLibraryItem "/library/comments.lbi" --><!-- #EndLibraryItem -->
+	 <!-- TemplateEndEditable -->
+
+    </div>
+
+
+
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+<script type="text/javascript">
+<!-- {literal} -->
+onload = function()
+{
+  fixpng();
+}
+<!-- {/literal} -->
+</script>
+</html>

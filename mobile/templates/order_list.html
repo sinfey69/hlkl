@@ -1,0 +1,87 @@
+{$header}
+<style>
+tr th{background:#F7F7F7;text-align:left;font-size:16px;padding:10px 0;}
+tr td{background:#FFFFFF;text-align:left;font-size:14px;line-height:25px;padding:10px 0;}
+
+</style>
+<body>
+	<div class="main">
+		<div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img width="75" height="75" border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img width="75" height="75" border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img width="75" height="75" border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img width="75" height="75" border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+		<div class="good-title" style="background:#FFFFFF;text-align:left;padding-left:18px;">我的订单
+			<span><label for="check_all_top"><input type="checkbox" id="check_all_top" onclick="CheckAll(this);"/>全选</label>
+			<input type="button" value="取消" class="txt4" onclick="allcancel();"/></span>
+		</div>
+		<!--  <form method="POST" action="buy.php?act=order_del">-->
+		<table width="100%">
+			{foreach from=$order item=val}
+				<tr>
+					<th style="text-align:right;"><input type="checkbox" id="sn_{$val.order_id}" name="check[]" value="{$val.order_id}"/></th>
+					<th style="color:#AD9D69;font-size:14px;"><label for="sn_{$val.order_id}">{$val.order_sn}</label></th>
+					<th style="text-align:right;padding-right:10px;"><a style="float: right;line-height: 35px;" href="buy.php?act=order_edit&id={$val.order_id}">&nbsp;查看详情</a>{$val.paystatus}</th>
+				</tr>
+				{foreach from=$val.goods item=v}
+					<tr class="goods">
+						<td colspan="3">
+							<table width="100%">
+								<tr>
+									<td style="width:120px;text-align:center;"><a href="goods.php?id={$v.goods_id}"><img border="0" src="{if $v.goods_img eq ''}./templates/images/none.jpg{else}../{$v.goods_img}{/if}" width="100" height="80" style="border:1px solid #CFCDCE;padding: 10px 0"/></a></td>
+									<td >{$v.goods_name}<br>颜色：{$v.goods_attr}<br>数量：{$v.goods_number} &nbsp;&nbsp;&nbsp;<font color="red">{$v.exchange_integral}积分+{$v.goods_price}元</font></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+
+				{/foreach}
+			{/foreach}
+		</table>
+		<div style="font-size: 16px;height: 70px;line-height: 70px;text-align: right;border-top:1px solid #FFFFFF;border-top:1px solid #9B9B9B;font-weight:bold;width:100%;">
+			<label for="check_all_bottom"><input type="checkbox" id="check_all_bottom" onclick="CheckAll(this);"/>全选</label>
+			<input type="button" value="取消" class="txt4" onclick="allcancel();"/><span style="padding-left:10px;"></span> 
+		</div>
+   
+    </div>
+    
+    <script>
+    $(function(){
+    	$(".pay[type=button]").val("支付宝支付");
+    	$("input[name=sbmt]").val("话费支付");
+    	$("form").css("text-align","right");
+    });
+    function CheckAll(obj){
+    	var check = $(obj).attr("checked");
+    	if(check == true){
+        	$("input[name=check[]]").each(function(){
+        		$(this).attr("checked", true);
+        	});
+    	}else{
+        	$("input[name=check[]]").each(function(){
+        		$(this).attr("checked", false);
+        	});    		
+    	}
+    }
+    function allcancel(){
+		if (!confirm('您确认要取消该订单吗？取消后此订单将视为无效订单')) return false;
+    	var checkstr = [];
+    	$("input[name=check[]]:checked").each(function(){
+    		checkstr.push($(this).val());
+    	});
+
+		$.ajax({
+			   type: "POST",
+			   url: "buy.php?act=order_cancel",
+			   data: "check="+checkstr,
+			   success: function(msg){
+			    	location.href = 'buy.php?act=order';
+			   }
+			});	    	
+    }
+    </script>
+</body>
+
+</html>

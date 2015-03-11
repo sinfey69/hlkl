@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{insert_scripts files='transport.js,utils.js'}
+	<div class="detepayment clearfix">
+		<div class="dete-pay-ri">
+			<p><span class="dete-goods-sum">商品数量总计：{$total.goods_count}件 </span>
+			<span>商品金额共计：{$total.exchange_integral}积分 + {$total.goods_price}元话费</span></p>
+			<span>您共需要为订单支付：<strong>{$total.exchange_integral}积分 + {$total.formated_goods_price}{if $total.shipping_fee gt 0} + {$total.shipping_fee}元运费{/if}{if $total.pay_fee gt 0} + {$total.pay_fee}元支付手续费{/if}</strong></span>
+		</div>
+	</div>
+	<div class="deteorder clearfix">
+		<h4>请最后确认您的信息</h4>
+		<div class="det-order-le">
+			<p><strong>积分支付：</strong><em>{$total.exchange_integral}积分</em><strong>{$pay_name}支付：</strong><em>{$total.amount}元</em></p>
+			<span id="ECS_CONFIRMADDRESS">
+			{include file='library/confirm_address.lbi '}
+			</span>
+		</div>
+		<div class="detsubmit">
+			<a href="flow.php?step=cart" title="返回购物车">返回购物车</a>
+			<input type="submit" value="提交订单"/>
+			<input type="hidden" name="integral" value="{$total.exchange_integral}"/>
+			<input type="hidden" name="step" value="done" />
+		</div>
+	</div>

@@ -1,0 +1,58 @@
+{$header}
+<style>
+tr th{background:#dddddd;text-align:left;padding:20px 0;font-size:20px;}
+tr td{background:#FFFFFF;border-bottom:1px solid #9b9b9b;border-top:1px solid #FFFFFF;text-align:left;padding:20px 0;padding-right:18px;font-size:16px;line-height:25px;}
+</style>
+<body>
+	<div class="main">
+		 <div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+		<div class="good-title" style="background:#FFFFFF;text-align:left;padding-left:20px;">我的订单</div>
+		<form method="POST" action="buy.php?act=order_del">
+		<table width="640">
+			{foreach from=$order item=val}
+				<tr>
+					<th width="35" style="text-align:center;"><input type="checkbox" name="check[]" value="{$val.order_id}"/></th>
+					<th colspan="2" style="color: #008000;font-size:20px;">订单号：{$val.order_sn}</th>
+					<th>{$val.paystatus}</th>
+				</tr>
+				{foreach from=$val.goods item=v}
+					<tr class="goods">
+						<td></td>
+						<td width="235">{$v.goods_name}</td>
+						<td width="231">颜色：{$v.goods_attr}<br>数量：{$v.goods_number}</td>
+						<td><font color="red">{$v.goods_price}元</font></td>
+					</tr>
+				{/foreach}
+			{/foreach}
+		</table>
+		<div style="font-size: 18px;height: 70px;line-height: 70px;padding-right: 50px;text-align: right;border-top:1px solid #FFFFFF;border-bottom:1px solid #9B9B9B;font-weight:bold;">
+			<input type="checkbox" onclick="CheckAll('selectAll',this);"/> <input type="submit" value="删除" class="txt4" />
+		</div>
+		</form>
+		<div style="border-top:1px solid #FFFFFF;height:50px;">
+		</div>       
+    </div>
+    
+    <script>
+    function CheckAll(value,obj)  {
+    	var form=document.getElementsByTagName("form")
+    	 for(var i=0;i<form.length;i++){
+    	    for (var j=0;j<form[i].elements.length;j++){
+    	    if(form[i].elements[j].type=="checkbox"){ 
+    	    var e = form[i].elements[j]; 
+    	    if (value=="selectAll"){e.checked=obj.checked}     
+    	    else{e.checked=!e.checked;} 
+    	       }
+    	    }
+    	 }
+    	}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<!-- {if $cat_style} -->
+<script type="text/javascript" src="js/jquery1.11.js"></script>
+<link href="{$cat_style}" rel="stylesheet" type="text/css" />
+<!-- {/if} -->
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,compare.js'}
+<script type="text/javascript" src="js/action.js"></script>
+<script type="text/javascript" src="js/scrollpic.js"></script>
+<script type="text/javascript" src="js/roll.js"></script>
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<div class="block1 clearfix" style="width:1097px;">
+   <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+</div>
+<script>
+$(document).scroll(function(){
+	var t = parseInt($(document).scrollTop());
+	if(t < 170){
+		t = 170;
+	}
+	if(t > $(document).height() - $('.sideBar').height() - 260){
+		t = $(document).height() - $('.sideBar').height() - 260;
+	}
+	$('.sideBar').css('top', t +'px');
+});
+</script>
+<div class="gift clearfix">
+	<div class="pageBodyCont clearfix">
+	    <div class="fl sideBar" style="position:absolute;">
+                <span class="userIcon mt30"><em></em><img src="images/pic/userIcon.jpg" /></span>
+                <ul class="leftNav">
+                    <li class="leftNav_top"></li>
+                    <li class="current"><a href="#">首页</a></li>
+                    <li class="space"><a href="#index_title02">缤纷好礼</a></li>
+                    <li><a href="#">超值好劵</a></li>
+                    <li class="space"><a href="#">积分抽奖</a></li>
+                    <li><a href="#index_title01">积分聚划算</a></li>
+                    <li class="space"><a href="user.php">个人中心</a></li>
+                    <li class="leftNav_btm"></li>
+                </ul>
+                <span class="qrCode"><a href="#"><img src="images/qrCode01.jpg" /><br />手机微商城</a></span>
+                <span class="qrCode"><a href="#"><img src="images/qrCode02.jpg" /><br />官方微信</a></span>
+            </div>
+		<div class="gift-main clearfix">
+			<div class="gift-list clearfix">
+				<ul class="gift-info clearfix">
+				<!--{foreach from=$goods_list item=goods}-->
+					<!-- {if $goods.goods_id} -->
+					<li>
+						<a target="_blank" href="{$goods.url}" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" alt="" title="{$goods.goods_name}" /></a>
+						<p><a target="_blank" href="{$goods.url}" title="{$goods.goods_name}">{$goods.name}</a></p>
+						<div class="clearfix"><span><em>{$goods.exchange_integral}</em>积分+<em>{$goods.goods_price}</em>话费</span><a target="_blank" href="{$goods.url}" title="{$goods.goods_name}">立即换购</a></div>
+					</li>
+					<!--{/if}-->
+				<!--{/foreach}-->
+				</ul>
+	<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+			</div>
+			<div class="gift-look">
+
+				<dl>
+					<dt>分类查找</dt>
+					<!--{foreach from=$categories item=cat}-->
+					<dd><span>{$cat.name|escape:html}</span>
+						<div>
+						<a href="binfen.php?cid={$cat.id}">全部</a>
+						<!--{foreach name=childs from=$cat.cat_id item=child}-->
+							<a href="binfen.php?cid={$child.id}" title="{$child.name|escape:html}">{$child.name|escape:html}</a>
+						<!--{/foreach}-->
+						</div>
+					</dd>
+					<!--{/foreach}-->
+				</dl>
+				<div class="creditsexe clearfix">
+					<ul class="credit-tit clearfix">
+						<!-- {if !empty($surpluslist)}-->
+						  <li class="seletit">剩下积分还可兑换</li>
+						  <li>你可能会喜欢的宝贝</li>
+						<!-- {else} -->
+						  <li class="seletit">你可能会喜欢的宝贝</li>
+						<!-- {/if} -->
+					</ul>
+					<div class="credit-main">
+						<!-- {if !empty($surpluslist)}-->
+						<ul class="clearfix credited">
+							<!-- {foreach from=$surpluslist item=list} -->
+							<li>
+								<a target="_blank" href="{$list.url}" title="{$list.name}"><img src="{$list.goods_thumb}" alt="{$list.name}" title="{$list.name}" /></a>
+								<span><em>{$list.exchange_integral}</em>积分+<em>{$list.goods_price}</em>话费</span>
+								<p><a target="_blank" href="{$list.url}" title="{$list.name}">{$list.name}</a></p>
+							</li>
+							<!-- {/foreach} -->
+						</ul>
+						<!-- {/if} -->
+						<ul class="clearfix <!-- {if empty($surpluslist)}-->credited<!-- {/if} -->">
+							<!-- {foreach from=$maybe_like item=like} -->
+							<li>
+								 <a target="_blank" href="{$like.url}" title="{$like.name}"><img src="{$like.thumb}" alt="{$like.name}" title="{$like.name}" /></a>
+								<span><em>{$like.exchange_integral}</em>积分+<em>{$like.goods_price}</em>话费</span>
+								<p><a target="_blank" href="{$like.url}" title="{$like.name}">{$like.name}</a></p>
+							</li>
+							<!-- {/foreach} -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+<script type="text/javascript">
+
+// 点击分类查找，内容隐藏/显示
+$('.gift-look dd span').click(function(){
+	$(this).parent().toggleClass('dd-seled');
+	$(this).siblings('div').toggleClass('a-seled');
+});
+
+//积分切换与喜欢的宝贝的tab切换
+$('.credit-tit > li').click(function(){
+	$(this).addClass('seletit');
+	$(this).siblings().removeClass('seletit');
+  	$('.credit-main > ul').eq($(this).index()).addClass('credited').siblings().removeClass('credited');
+})
+</script>
+</html>

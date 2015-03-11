@@ -1,0 +1,220 @@
+{$header}
+
+<body>
+<script type="text/javascript" src="./templates/js/utils.js"></script>
+<script type="text/javascript" src="./templates/js/transport.js"></script>
+<script type="text/javascript" src="./templates/js/region.js"></script>
+<script type="text/javascript">
+	region.isAdmin=true;
+</script>
+	<div class="main">
+	<form action="buy.php?act=done_order" method="post">
+         <div class="b-ready">已选商品订单</div>
+         
+         {foreach from=$list item=good}
+	         <div class="shop">
+	         	<div class="shop-img"><img border="0" src="../../{$good.goods_img}" width="80" height="97"/></div>
+	            <div class="shop-msg">
+	            	<div style="height:50px;">{$good.goods_name}</div>
+	                <div >颜色：{$good.goods_attr}</div>
+	                <div >数量：{$good.goods_number}副</div>
+	            </div>
+	         </div>
+         {/foreach}
+          
+        <div class="mod-tr">收货人信息</div>
+        <table class="result" style="width: 100%;">
+		{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+        	{foreach from=$consignee_list item=address key=key}
+	            <tr>
+	                <td width="300">
+					<div class="r-tip">
+						{$address.consignee} {if $address.mobile eq ''}{$address.tel}{else}{$address.mobile}{/if} 
+					</div>
+					<div class="r-msg">
+						{$address.province}{$address.city}{$address.district}{$address.address}
+					</div>
+					</td>
+	                <td><input type="radio" name="address_id" value="{$address.address_id}" {if $address.address eq $order.address}checked{/if} onclick="rewriter({$address.address_id});"/></td>
+	            </tr> 
+            {/foreach}   
+		{else}
+			<tr>
+				<td width="300">
+					<div class="r-tip">
+						{$order.consignee} {if $order.mobile eq ''}{$order.tel}{else}{$order.mobile}{/if} 
+					</div>
+					<div class="r-msg">
+						{$order.province}{$order.city}{$order.district}{$order.address}
+					</div>
+				</td>
+			</tr> 
+			{/if}
+        </table>
+        <form>
+		{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+        <div class="mod-tr">
+        <div class="b-ready">添加收货地址：</div>
+        </div>
+		
+        <div class="mod-tr">
+        	<table>
+            	<tr>
+                	<td width="100">收货人</td>
+                    <td width="220"><input class="txt2" type="text" id="consignee"/></td>                             
+                </tr>
+                <tr>
+                	<td>手机号码</td>
+                    <td><input class="txt2" type="text" id="mobile"/></td>
+                </tr>
+                <tr>
+                	<td>省份</td>
+                    <td>
+					      <select class="txt2" id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
+					        <option value="0">---请选择省---</option>
+					        <!-- {foreach from=$province_list item=province} -->
+					        <option value="{$province.region_id}" >{$province.region_name}</option>
+					        <!-- {/foreach} -->
+					      </select>
+
+                    </td>
+                </tr>
+                <tr>
+                	<td>地级市</td>
+                    <td>
+					      <select class="txt2" id="selCities" onchange="region.changed(this, 3, 'selDistricts')">
+					        <option value="0">---请选择市---</option>
+					        <!-- {foreach from=$city_list item=city} -->
+					        <option value="{$city.region_id}" >{$city.region_name}</option>
+					        <!-- {/foreach} -->
+					      </select>                    
+                    
+                    </td>
+                </tr>
+                <tr>
+                     <td>市县</td>
+                     <td>
+                           <select class="txt2" id="selDistricts">
+					        <option value="0">---请选择区---</option>
+					        <!-- {foreach from=$district_lis item=district} -->
+					        <option value="{$district.region_id}">{$district.region_name}</option>
+					        <!-- {/foreach} -->
+					      </select>
+                     </td>
+                </tr>
+                <tr>
+                     <td>详细地址</td>
+                     <td><input class="txt2" type="text" id="address"/></td>
+                </tr>
+
+            </table>
+				<div class="b-ready">
+        			<input type="button" class="address-img" id="add-address" title="保存地址"/>
+				 </div>
+        </div>
+        {/if}
+        <div class="mod-tr">
+			<table>
+            	<tr>
+                	<td width="100">留言</td>
+					<td width="220">
+					{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+                    <textarea rows=5 class="txt3" name="postscript">{$order.postscript}</textarea>   
+					{else}
+						<p>{$order.postscript}</p>
+					{/if}
+					</td>  
+                </tr> 
+             </table>       	
+        </div>
+        <div class="mod-tr">
+			<table>
+            	<tr>
+                	<td width="100">发货方式</td>
+                    <td width="220">
+						{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+                    	<select name="style" class="txt2">
+                    		{foreach from=$style item=rs}
+                    			<option value="{$rs.shipping_id}" {if $order.shipping_id eq $rs.shipping_id}selected{/if}>{$rs.shipping_name}</option>
+                    		{/foreach}
+                    	</select>
+						{else}
+							{foreach from=$style item=rs}
+                    			 {if $order.shipping_id eq $rs.shipping_id}{$rs.shipping_name}{/if}
+                    		{/foreach}
+						{/if}
+                    </td>                             
+                </tr> 
+             </table>
+             <div class="act">快递费用：<font color="red">￥0</font></div>       	
+        </div> 
+        <div class="tration">
+        	<div class="t-tip">支付方式</div>
+			{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+            <div class="t-sel">
+                <span><input type="radio" name="payment" value="1" {if $order.pay_id eq 1}checked{/if}/></span> <img border="0" src="./templates/images/zfb.jpg" width="100" height="60"/><span></span>
+                <span><input type="radio" name="payment" value="2" {if $order.pay_id eq 2}checked{/if}/></span> <img border="0" src="./templates/images/hf.jpg" width="110" height="60"/>
+            </div>
+			{else}
+            <div class="t-sel">
+                {if $order.pay_id eq 1}<img border="0" src="./templates/images/zfb.jpg" width="100" height="60"/>{/if}
+                {if $order.pay_id eq 2}<img border="0" src="./templates/images/hf.jpg" width="110" height="60"/>{/if}
+            </div>
+			{/if}
+        </div> 
+        
+        <div class="result">
+        	<div class="r-tip">请最后确认您的信息</div>
+            <div class="r-msg">
+            	<div>积分支付：<font color="red">{$order.integral}积分</font><span></span>支付总额：<font color="red">{$order.goods_amount}元</font></div>
+                <div>寄送至：<span id="a-address">{$order.province}{$order.city}{$order.district}{$order.address}</span></div>
+                <div>收件人：<span id="a-msg">({$order.consignee}) 收 {if $order.mobile eq ''}{$order.tel}{else}{$order.mobile}{/if}</span></div>
+            </div>
+        </div> 
+			<div class="r-button">
+				<input type="hidden" name="order_id" id="order_id" value="{$id}"/>
+				<input class="txt4" type="button" value="返回订单列表" onclick="location.href='buy.php?act=order';"/>        
+				{if $order.order_status eq 0 and $order.shipping_status eq 0 and $order.pay_status eq 0}
+					<span></span><input class="txt4" type="submit" value="保存修改"/>
+				{/if}
+			</div>   
+        </form>
+    </div>
+
+</body>
+<script type="text/javascript">
+	$(function(){
+		$("#add-address").click(function(){
+			var consignee = $("#consignee").val();
+			var mobile 	= $("#mobile").val();
+			var province = $("#selProvinces").val();
+			var city = $("#selCities").val();
+			var district = $("#selDistricts").val();
+			var address = $("#address").val();
+			var order_id = $("#order_id").val();
+			$.ajax({
+				   type: "POST",
+				   url: "buy.php?act=address",
+				   data: "consignee="+consignee+"&mobile="+mobile+"&province="+province+"&city="+city+"&district="+district+"&address="+address+"&order_id="+order_id,
+				   success: function(msg){
+					alert(msg);
+				    location.href = 'buy.php?act=order_edit&id={$id}';
+				   }
+				});			
+		});
+	});
+	
+	function rewriter(id){
+		$.ajax({
+			   type: "POST",
+			   url: "buy.php?act=get",
+			   data: "id="+id,
+			   success: function(msg){
+				   	var str = msg.split("|");
+					$("#a-address").html(str[0]);
+					$("#a-msg").html(str[1]);
+			   }
+			});	
+	}
+</script>
+</html>

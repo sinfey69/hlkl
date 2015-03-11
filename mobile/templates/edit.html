@@ -1,0 +1,44 @@
+{$header}
+
+<body>
+	<div class="main">
+		<div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img width="75" height="75" border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img width="75" height="75" border="0" src="./templates/images/nav2.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img width="75" height="75" border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img width="75" height="75" border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+		<div class="b-ready" >个人资料</div>
+		
+		{foreach from=$reg item=val key=key}
+	        <div class="list" style="background:#F2F2F2;border-bottom: 1px solid #FFFFFF;">
+	        	<div class="item" style="padding:0;font-size:14px;border:0px;height: 72px;line-height:72px;text-align:center;width:320px;margin:0 auto;">
+		        	<!-- <div style="float:left;width:97px;padding-left:10px;">{$val.regname}：</div>
+		        	<div style="float:left;"><input style="width:140px;" type="text" class="txt5" id="reg{$key}" value="{$val.content}"></div>
+	        		<div style="float:left;margin-left:3px;"><input type="button" value="修改" class="button-edit" onclick="regV({$key},{$val.user_id},{$val.reg_field_id});"/></div> -->
+	        		<span style="float:left;padding:0;padding-left:8px;">{$val.regname}:</span><span style="float:padding:0;"><input style="width:148px;" type="text" class="txt5" id="reg{$key}" value="{$val.content}"> <input type="button" value="修改" class="button-edit" onclick="regV({$key},{$val.user_id},{$val.reg_field_id});"/></span>
+	        	</div>
+	        	<!--  <div class="clear"></div>-->
+	        </div>
+        {/foreach}
+        
+        <div class="b-ready" style="font-size:24px;"></div>                   
+    </div>
+</body>
+<script>
+	function regV(id,uid,reg){
+
+		var restr = $("#reg"+id).val();
+		$.ajax({
+			   type: "POST",
+			   url: "user.php?act=edit_content",
+			   data: "uid="+uid+"&reg="+reg+"&v="+restr,
+			   success: function(msg){
+			    	location.href = 'user.php?act=edit';
+			   }
+			});	
+
+	}
+</script>
+</html>        

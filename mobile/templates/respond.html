@@ -1,0 +1,19 @@
+{$header}
+<body>
+	<div class="main">
+        <div class="good-title" style="border-bottom:0;">{$message}</div>
+        <div class="good-title" style="border-bottom:0;">您可以 <a href="index.php">返回首页</a> 或去 <a href="user.php">用户中心</a></div>
+		<div class="good-title" style="border-bottom:0;"><span id="view"><b>3</b></span>秒后自动跳转至首页</div>
+		<script>   
+			var t=2
+			setInterval("AutoTime()",1000);   //启动1秒定时   
+			function  AutoTime()   {   
+			if(t == 0)  location  = "index.php";   
+			view.innerHTML   =   "<b>"+t+"</b>";  
+			t--; 
+		}   
+		</script>
+                  
+    </div>
+</body>
+</html>

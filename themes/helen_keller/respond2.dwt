@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="MobilePayPlatform" content="{$meta}" />
+
+<meta name="Description" content="{$description}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+<script type="text/javascript" src="js/action.js"></script>
+</head>
+<body>
+
+<!-- {if $pay_online } -->
+     {$pay_online}
+<!-- {else} -->
+
+    <form name="form1" action="" method="post">
+    <h2>提交信息</h2>	
+    <TABLE width="100%" >
+    
+      <tr>
+        <td>交易日期：</td><td><input type=text NAME="payDate" value=""></td><td>时间格式: 20140501</td>
+      </tr>
+      
+    
+    <tr><td width="139">
+    <input type=submit name="submitbutton" value="提交" ></td>
+    <td></td><td></td>
+    </tr>
+    </TABLE>
+    </form>
+
+<!-- {/if} -->
+</body>
+</html>

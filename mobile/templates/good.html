@@ -1,0 +1,41 @@
+{$header}
+<body>
+	<div class="main">
+		<div style="text-align:center;background-color: #fff;"><img border="0" src="./templates/images/logo.gif"/><br><span style="font-size:15px;">海 伦 凯 勒 眼 镜 积 分 商 城</span></div>
+		<form id="sub" action="good.php" method="POST" style="background-color: #fff;">
+			<div class="mod-search">	        	
+		            <div class="s-input"><input type="text" class="txt1" name="search" value=""/></div>
+		            <div class="s-icon" onclick="$('#sub').submit();">搜 索</div>
+		            <div style="float:left;height:35px;line-height:35px;padding-left:3px;"><a href="user.php?act=getmsg&id=19" style="color:#ea64a1;"> 兑换说明</a></div>
+	        </div>
+        </form>
+        
+		<div class="mod-nav">
+        	<div class="nav"><a href="index.php"><img width="75" height="75" border="0" src="./templates/images/nav1.jpg"/></a></div>
+			<div class="nav"><a href="good.php"><img width="75" height="81" border="0" src="./templates/images/nav2-c.jpg"/></a></div>
+            <div class="nav"><a href="draw.php"><img width="75" height="75" border="0" src="./templates/images/nav3.jpg"/></a></div>
+            <div class="nav"><a href="user.php"><img width="75" height="75" border="0" src="./templates/images/nav4.jpg"/></a></div>
+        </div>
+        
+        <div class="mod-good" id="mod-good">
+        	{foreach from=$cat_goods item=goods}
+	        	<div class="good">
+	            	<div class="good-up">
+	                	<a href="goods.php?id={$goods.goods_id}" title="{$goods.name}"><img border="0" src="../{$goods.goods_img}" width="260" height="215"/></a>
+	                </div>
+	                <div class="good-down">
+	                	{$goods.goods_name}
+	                </div>
+	                <div class="good-down">
+	                	<span>{$goods.exchange_integral}</span>积分+<span>{$goods.goods_price}</span>话费
+	                </div>
+	            </div>
+            {/foreach}                                                
+        </div>         
+    </div>
+</body>
+<script>
+//var h = {$gnum}*320;
+//$('#mod-good').height(h+'px');
+</script>
+</html>
